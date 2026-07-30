@@ -2,6 +2,9 @@ from dao.admin_dao import AdminDAO
 from models.admin import Admin
 from dao.archivo_dao import ArchivoDAO
 from models.archivo import Archivo
+from dao.categoria_dao import CategoriaDAO
+from models.categoria import Categoria
+
 #==========================================================================================
 #==========================================================================================
 
@@ -148,15 +151,83 @@ def eliminar_archivo():
 
 #CATEGORIAS
 
+def ver_categorias():
+    try:
+        categoria_dao = CategoriaDAO()
+        categorias = categoria_dao.obtener_todo()
+
+        if len(categorias) == 0:
+            print("No hay categorias registradas")
+        else:
+            for categoria in categorias:
+                print (f"| {categoria.id} | {categoria.nombre} | {categoria.tipo_categoria} | {categoria.descripcion} | {categoria.estado} | ")
+        print("\n Conexion esxitosa con la base de datos")
+
+    except Exception as e:
+        print("Existe un error")
+        print(e)
+
+#==========================================================================================
+
+def insertar_categorias():
+    print("INSERTAR UNA NUEVA CATEGORIA")
+    nombre = input("Escribe el mombre de la categoria:")
+    tipo_categoria = input("Escribe el tipo de categoria:")
+    descripcion = input("Escribe una breve descripcion sobre esta categoria:")
+    estado = input("Escribe el estado de la categoria:")
+    try:
+        categoria_dao = CategoriaDAO()
+        ultimo_id = categoria_dao.obtener_ultimo_id() + 1
+        categoria = Categoria(ultimo_id, nombre, tipo_categoria, descripcion, estado)
+        categoria_dao.insertar(categoria)
+        print("Insercion de la nueva categoria fue existosa")
+    except Exception as e:
+        print("Error al insertar la categoria")
+        print(e)
+
+#==========================================================================================
+
+def actualizar_categoria():
+    try:
+        categoria_dao = CategoriaDAO()
+        print("Lista de categorias disponibles")
+        ver_categorias()
+        id = int(input("Seleccione el id de la categoria a actualizar"))
+        nombre = input("Escribe el nombre de la categoria:")
+        tipo_categoria = input("Escribe el tipo de categoria:")
+        descripcion = input("Escribe una breve descripcion de la categoria:")
+        estado = input("Escribe correo electronico:")
+        categoria = Categoria(id, nombre, tipo_categoria, descripcion, estado)
+        categoria_dao.actualizar(categoria)
+        print("La categoria fue actualizada con exito")
+    except Exception as e:
+        print("Error al actualizar la categoria")
+        print(e)
+
+#==========================================================================================
+
+def eliminar_categoria():
+    try:
+        categoria_dao = CategoriaDAO()
+        print("Lista de categorias disponibles")
+        ver_categorias()
+        id = int(input("Escribe el id de la categoria a eliminar:"))
+        categoria_dao.eliminar(id)
+        print(f"La categoria {id} ha sido eliminada con exito")
+    except Exception as e:
+        print(f"Error al aliminar la categoria {id}")
+        print(e)
 
 
+#==========================================================================================
+    #MENUS
 #==========================================================================================
 def menu_Admin():
     print("1. ver administradores")
     print("2. Actualizar administradores")
     print("3. Eliminar administradores")
     
-    opcion = int(input("Selecciona una opcion (1-3):"))
+    opcion = int(input("Selecciona una opcion (1-9):"))
 
     match opcion:
         case 1:
@@ -188,6 +259,25 @@ def menu_archivos():
 
 #==========================================================================================
 
+def menu_categorias():
+    print("1. Ver categorias")
+    print("2. Insertar categoria")
+    print("3. Actualizar categorias")
+    print("4. Eliminar categorias")
+    opcion = int(input("Selecciona una opcion (1-4):"))
+
+    match opcion:
+        case 1:
+            ver_categorias()
+        case 2:
+            insertar_categorias()
+        case 3:
+            actualizar_categoria()
+        case 4:
+            eliminar_categoria()
+
+#==========================================================================================
+
 def main():
     print("=== Menu Ruta Magica ===")
     print("Menu de opciones:")
@@ -196,12 +286,15 @@ def main():
     print("3. Evento")
     print("4. Administradores")
     print("5. Archivos")
+    print("6. Categorias")
+    print("7. Imagenes")
     opcion = int(input("Escribe tu opcion: "))
     match opcion:
         case 4: menu_Admin()
         case 5: menu_archivos()
+        case 6: menu_categorias()
 
-    print("Saliendo del sistema de Biblioteca universitaria....")
+    print("Saliendo del sistema de Ruta Magica ....")
 
 
 if __name__ == "__main__":

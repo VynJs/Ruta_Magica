@@ -23,21 +23,22 @@ class EventoDAO:
                 horario_inicio= registro[4],
                 horario_fin= registro[5],
                 ubicacion= registro[6],
-                mapa= registro[7],
-                nombre_organizador= registro[8],
-                edad= registro[9],
-                telefono = registro[10],
-                correo = registro[11],
-                descripcion_corta = registro[12],
-                descripcion_completa = registro[13],
-                caracteristica_1 = registro[14],
-                caracteristica_2 = registro[15],
-                caracteristica_3 = registro[16],
-                instagram = registro[17],
-                facebook = registro[18],
-                pagina_web = registro[19],
-                estado = registro[20],
-                datos_destacados = registro[21]
+                latitud = registro[7],
+                longitud = registro[8],
+                nombre_organizador= registro[9],
+                edad= registro[10],
+                telefono = registro[11],
+                correo = registro[12],
+                descripcion_corta = registro[13],
+                descripcion_completa = registro[14],
+                caracteristica_1 = registro[15],
+                caracteristica_2 = registro[16],
+                caracteristica_3 = registro[17],
+                instagram = registro[18],
+                facebook = registro[19],
+                pagina_web = registro[20],
+                estado = registro[21],
+                datos_destacados = registro[22]
 
             )
             eventos.append(evento)
@@ -58,7 +59,7 @@ class EventoDAO:
         nombre_organizador, edad, telefono, correo, descripcion_corta, 
         descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, instagram,
         facebook, pagina_web, estado, datos_destacados) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, POINT(%s,%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ) 
         """
         cursor.execute(sql, (
             evento.id,
@@ -68,7 +69,8 @@ class EventoDAO:
             evento.hora_inicio,
             evento.hora_fin,
             evento.ubicacion,
-            evento.mapa,
+            evento.longitud,
+            evento.latitud,
             evento.nombre_organizador,
             evento.edad,
             evento.telefono,
@@ -96,7 +98,7 @@ class EventoDAO:
 
         sql = """
             UPDATE evento SET
-            nombre_evento = %s, categoria = %s, fecha = %s, hora_inicio = %s, hora_fin = %s, ubicacion = %s, mapa = %s,
+            nombre_evento = %s, categoria = %s, fecha = %s, hora_inicio = %s, hora_fin = %s, ubicacion = %s, mapa = POINT(%s, %s),
             nombre_organizador = %s, edad = %s, telefono = %s, correo = %s, descripcion_corta = %s, 
             descripcion_completa = %s, caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s, instagram = %s,
             facebook = %s, pagina_web = %s, estado = %s, datos_destacados = %s
@@ -110,7 +112,8 @@ class EventoDAO:
                         evento.hora_inicio,
                         evento.hora_fin,
                         evento.ubicacion,
-                        evento.mapa,
+                        evento.ubicacion,
+                        evento.longitud,
                         evento.nombre_organizador,
                         evento.edad,
                         evento.telefono,

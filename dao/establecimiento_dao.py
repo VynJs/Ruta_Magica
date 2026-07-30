@@ -1,6 +1,6 @@
 from database.conexion import Conexion
 from models.establecimiento import Establecimiento
-
+from psycopg2.extras import Json
 class EstablecimientoDAO:
 
  #SELCT * from
@@ -22,23 +22,24 @@ class EstablecimientoDAO:
                 horario_inicio = registro[3],
                 horario_fin= registro[4],
                 direccion= registro[5],
-                mapa= registro[6],
-                nombre_propietario= registro[7],
-                edad= registro[8],
-                telefono= registro[9],
-                correo= registro[10],
-                descripcion_corta= registro[11],
-                descripcion_completa= registro[12],
-                caracteristica_1= registro[13],
-                caracteristica_2= registro[14],
-                caracteristica_3= registro[15],
-                instagram= registro[16],
-                facebook= registro[17],
-                pagina_web= registro[18],
-                estado= registro[19],
-                servicios= registro[20],
-                rango_precios= registro[21],
-                productos_ofrecer= registro[22]
+                latitud = registro[6],
+                longitud = registro[7],
+                nombre_propietario= registro[8],
+                edad= registro[9],
+                telefono= registro[10],
+                correo= registro[11],
+                descripcion_corta= registro[12],
+                descripcion_completa= registro[13],
+                caracteristica_1= registro[14],
+                caracteristica_2= registro[15],
+                caracteristica_3= registro[16],
+                instagram= registro[17],
+                facebook= registro[18],
+                pagina_web= registro[19],
+                estado= registro[20],
+                servicios= registro[21],
+                rango_precios= registro[22],
+                productos_ofrecer= registro[23]
 
             )
             establecimientos.append(establecimiento)
@@ -59,7 +60,7 @@ class EstablecimientoDAO:
         caracteristica_1, caracteristica_2, caracteristica_3, instagram, facebook,
         pagina_web, estado, servicios, rango_precios, productos_ofrecer,
         imagen_principal, imagenes_galeria, estado, folio, fecha_registro)
-        VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES ( %s, %s, %s, %s, %s, POINT(%s,%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         cursor.execute(sql, (
@@ -69,7 +70,8 @@ class EstablecimientoDAO:
             establecimiento.horario_inicio,
             establecimiento.horario_fin,
             establecimiento.direccion,
-            establecimiento.mapa,
+            establecimiento.longitud,
+            establecimiento.latitud,
             establecimiento.nombre_propietario,
             establecimiento.edad,
             establecimiento.telefono,
@@ -103,7 +105,7 @@ class EstablecimientoDAO:
 
         sql = """
             UPDATE establecimiento SET
-            nombre_establecimiento = %s, categoria = %s, horario_inicio = %s, horario_fin = %s, direccion = %s, mapa = %s, 
+            nombre_establecimiento = %s, categoria = %s, horario_inicio = %s, horario_fin = %s, direccion = %s, mapa = POINT(%s, %s), 
             nombre_propietario = %s, edad, telefono = %s, correo = %s, descripcion_corta = %s, descripcion_completa = %s,
             caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s, instagram = %s, facebook = %s,
             pagina_web, estado = %s, servicios = %s, rango_precios = %s, productos_ofrecer = %s,
@@ -117,7 +119,8 @@ class EstablecimientoDAO:
                         establecimiento.horario_inicio,
                         establecimiento.horario_fin,
                         establecimiento.direccion,
-                        establecimiento.mapa,
+                        establecimiento.longitud,
+                        establecimiento.latitud,
                         establecimiento.nombre_propietario,
                         establecimiento.edad,
                         establecimiento.telefono,

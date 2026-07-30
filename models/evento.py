@@ -21,7 +21,7 @@ class Evento:
         self.caracteristica_3 = caracteristica_3
         self.instagram = instagram
         self.facebook = facebook
-        self.pagina_web - pagina_web
+        self.pagina_web = pagina_web
         self.estado = estado
         self.datos_destacados = datos_destacados
 
