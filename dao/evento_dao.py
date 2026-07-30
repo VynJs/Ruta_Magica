@@ -1,0 +1,212 @@
+from database.conexion import Conexion
+from models.evento import Evento
+
+class EventoDAO:
+
+    #SELCT * from
+    #==========================================================================================
+
+    def obtener_todo(self):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("SELECT * FROM vista_evento")
+        registros = cursor.fetchall()
+
+        eventos = []
+        for registro in registros:
+            evento = Evento(
+                id = registro[0],
+                nombre_evento= registro[1],
+                categoria = registro[2],
+                fecha = registro[3],
+                horario_inicio= registro[4],
+                horario_fin= registro[5],
+                ubicacion= registro[6],
+                mapa= registro[7],
+                nombre_organizador= registro[8],
+                edad= registro[9],
+                telefono = registro[10],
+                correo = registro[11],
+                descripcion_corta = registro[12],
+                descripcion_completa = registro[13],
+                caracteristica_1 = registro[14],
+                caracteristica_2 = registro[15],
+                caracteristica_3 = registro[16],
+                instagram = registro[17],
+                facebook = registro[18],
+                pagina_web = registro[19],
+                estado = registro[20],
+                datos_destacados = registro[21]
+
+            )
+            eventos.append(evento)
+
+        cursor.close()
+        conexion.close()
+        return eventos
+    
+    #==========================================================================================
+
+    def insertar(self, evento):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        sql = """
+        INSERT INTO evento (
+        id, nombre_evento, categoria, fecha, hora_inicio, hora_fin, ubicacion, mapa,
+        nombre_organizador, edad, telefono, correo, descripcion_corta, 
+        descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, instagram,
+        facebook, pagina_web, estado, datos_destacados) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ) 
+        """
+        cursor.execute(sql, (
+            evento.id,
+            evento.nombre_evento,
+            evento.categoria,
+            evento.fecha,
+            evento.hora_inicio,
+            evento.hora_fin,
+            evento.ubicacion,
+            evento.mapa,
+            evento.nombre_organizador,
+            evento.edad,
+            evento.telefono,
+            evento.correo,
+            evento.descripcion_corta,
+            evento.caracteristica_1,
+            evento.caracteristica_2,
+            evento.caracteristica_3,
+            evento.instagram,
+            evento.facebook,
+            evento.pagina_web,
+            evento.estado,
+            evento.datos_destacados
+        ))
+
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+    #==========================================================================================
+
+    def actualizar(self, evento):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        sql = """
+            UPDATE evento SET
+            nombre_evento = %s, categoria = %s, fecha = %s, hora_inicio = %s, hora_fin = %s, ubicacion = %s, mapa = %s,
+            nombre_organizador = %s, edad = %s, telefono = %s, correo = %s, descripcion_corta = %s, 
+            descripcion_completa = %s, caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s, instagram = %s,
+            facebook = %s, pagina_web = %s, estado = %s, datos_destacados = %s
+            WHERE id = %s;
+        """
+        cursor.execute(sql, (
+                        evento.id,
+                        evento.nombre_evento,
+                        evento.categoria,
+                        evento.fecha,
+                        evento.hora_inicio,
+                        evento.hora_fin,
+                        evento.ubicacion,
+                        evento.mapa,
+                        evento.nombre_organizador,
+                        evento.edad,
+                        evento.telefono,
+                        evento.correo,
+                        evento.descripcion_corta,
+                        evento.caracteristica_1,
+                        evento.caracteristica_2,
+                        evento.caracteristica_3,
+                        evento.instagram,
+                        evento.facebook,
+                        evento.pagina_web,
+                        evento.estado,
+                        evento.datos_destacados
+                        ))
+
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+    #==========================================================================================
+
+    def eliminar(self,id):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("DELETE FROM evento WHERE id = %s", (id,))
+
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+    #==========================================================================================
+    
+    def obtener_ultimo_id(self):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("SELECT MAX(id) FROM evento")
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        if resultado[0] is None:
+            return 0
+        return resultado[0]
+
+    #==========================================================================================
+
+        #BUSCAR
+    #==========================================================================================
+
+    def buscar(self, texto):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        sql = """
+        SELECT * FROM evento
+        WHERE nombre ILIKE %s
+        ORDER BY nombre
+        """
+
+        cursor.execute(sql, (f"%{texto}%",))
+
+        registros = cursor.fetchall()
+
+        eventos = []
+        for registro in registros:
+            evento = Evento(
+                id=registro[0],
+                nombre=registro[1]
+            )
+            eventos.append(evento)
+
+        cursor.close()
+        conexion.close()
+
+        return eventos
+    
+    #ESTADO
+    #==========================================================================================
+    def cambiar_estado(self, evento):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        sql = """
+        UPDATE evento
+        SET activo = %s
+        WHERE id = %s
+        """
+
+        cursor.execute(sql, (
+                        evento.activo,
+                        evento.id
+        ))
+
+        conexion.commit()
+        cursor.close()
+        conexion.close()
