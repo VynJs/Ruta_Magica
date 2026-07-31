@@ -1,5 +1,6 @@
 from database.conexion import Conexion
 from models.evento import Evento
+from psycopg2.extras import Json
 
 class EventoDAO:
 
@@ -83,7 +84,7 @@ class EventoDAO:
             evento.facebook,
             evento.pagina_web,
             evento.estado,
-            evento.datos_destacados
+            Json(evento.datos_destacados)
         ))
 
         conexion.commit()
@@ -126,7 +127,7 @@ class EventoDAO:
                         evento.facebook,
                         evento.pagina_web,
                         evento.estado,
-                        evento.datos_destacados
+                        Json(evento.datos_destacados)
                         ))
 
         conexion.commit()

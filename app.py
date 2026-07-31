@@ -744,7 +744,7 @@ def menu_imagenes():
     print("1. Ver imágenes")
     print("2. Insertar imagen")
     print("3. Actualizar imágenes")
-    print("4. Eliminar imágnes")
+    print("4. Eliminar imágenes")
     opcion = int(input("Selecciona una opción (1-4):"))
 
     match opcion:
