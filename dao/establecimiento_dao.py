@@ -58,8 +58,7 @@ class EstablecimientoDAO:
         nombre_establecimiento, categoria, horario_inicio, horario_fin, direccion, mapa, 
         nombre_propietario, edad, telefono, correo, descripcion_corta, descripcion_completa,
         caracteristica_1, caracteristica_2, caracteristica_3, instagram, facebook,
-        pagina_web, estado, servicios, rango_precios, productos_ofrecer,
-        imagen_principal, imagenes_galeria, estado, folio, fecha_registro)
+        pagina_web, estado, servicios, rango_precios, productos_ofrecer)
         VALUES ( %s, %s, %s, %s, %s, POINT(%s,%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
@@ -87,7 +86,7 @@ class EstablecimientoDAO:
             establecimiento.estado,
             establecimiento.servicios,
             establecimiento.rango_precios,
-            establecimiento.productos_ofrecer
+            Json(establecimiento.productos_ofrecer)
 
         ))
 
@@ -109,7 +108,6 @@ class EstablecimientoDAO:
             nombre_propietario = %s, edad, telefono = %s, correo = %s, descripcion_corta = %s, descripcion_completa = %s,
             caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s, instagram = %s, facebook = %s,
             pagina_web, estado = %s, servicios = %s, rango_precios = %s, productos_ofrecer = %s,
-            imagen_principal = %s, imagenes_galeria = %s, estado, folio = %s, fecha_registro = %s
             WHERE id = %s
         """
         cursor.execute(sql, (
@@ -136,7 +134,7 @@ class EstablecimientoDAO:
                         establecimiento.estado,
                         establecimiento.servicios,
                         establecimiento.rango_precios,
-                        establecimiento.productos_ofrecer
+                        Json(establecimiento.productos_ofrecer)
                         ))
 
         conexion.commit()

@@ -1,4 +1,4 @@
-class Imgen:
+class Imagen:
     def _init_(self, id, id_establecimiento, id_entretenimiento, id_evento, url_imagen, public_id):
         self.id = id
         self.id_establecimiento = id_establecimiento

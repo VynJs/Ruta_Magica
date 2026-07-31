@@ -3,7 +3,7 @@ import flet as ft
 from config.tema import Color
 from dao.establecimiento_dao import EstablecimientoDAO
 
-def establecimientos_list(regresar, editar, agregar):
+def establecimiento_list(regresar, editar, agregar):
     tabla = ft.DataTable(
         columns=[
             ft.DataColumn(ft.Text("ID", color=Color.TEXTO_SECUNDARIO)),

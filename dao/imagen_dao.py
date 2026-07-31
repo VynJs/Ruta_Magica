@@ -26,6 +26,8 @@ class ImagenDAO:
             """Devuelve todas las imágenes registradas (uso administrativo)."""
             conexion = Conexion.obtener_conexion()
             cursor = conexion.cursor()
+
+            registros = cursor.fetchall()
             
             cursor.execute("SELECT * FROM imagenes")
 

@@ -3,7 +3,7 @@ import flet as ft
 from config.tema import Color
 from dao.entretenimiento_dao import EntretenimientoDAO
 
-def entretenimientos_list(regresar, editar, agregar):
+def entretenimiento_list(regresar, editar, agregar):
     tabla = ft.DataTable(
         columns=[
             ft.DataColumn(ft.Text("ID", color=Color.TEXTO_SECUNDARIO)),

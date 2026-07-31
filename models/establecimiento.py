@@ -7,7 +7,7 @@ class Establecimiento:
         self.categoria = categoria
         self.horario_inicio = horario_inicio
         self.horario_fin = horario_fin
-        self,direccion = direccion
+        self.direccion = direccion
         self.mapa = mapa
         self.nombre_propietario = nombre_propietario
         self.edad = edad
@@ -20,7 +20,7 @@ class Establecimiento:
         self.caracteristica_3 = caracteristica_3
         self.instagram = instagram
         self.facebook = facebook
-        self.pagina_web - pagina_web
+        self.pagina_web = pagina_web
         self.estado = estado
         self.servicios = servicios
         self.rango_precios = rango_precios

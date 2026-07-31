@@ -54,7 +54,7 @@ def main_window(page: ft.Page):
 
     # ---------------- Establecimientos ----------------
     def mostrar_lista_establecimientos(e=None):
-        contenido.content = establecimientos_list(
+        contenido.content = establecimiento_list(
             regresar=mostrar_inicio,
             editar=mostrar_formulario_establecimiento_editar,
             agregar=mostrar_formulario_establecimiento_nuevo
@@ -88,7 +88,7 @@ def main_window(page: ft.Page):
 
     # ---------------- Entretenimiento ----------------
     def mostrar_lista_entretenimiento(e=None):
-        contenido.content = entretenimientos_list(
+        contenido.content = entretenimiento_list(
             regresar=mostrar_inicio,
             editar=mostrar_formulario_entretenimiento_editar,
             agregar=mostrar_formulario_entretenimiento_nuevo
