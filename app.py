@@ -825,50 +825,30 @@ def menu_eventos():
 
 #==========================================================================================
 ft.app(target=main_window)
-#def main():
-#    print("=== Menú Ruta Mágica ===")
-#    print("Menu de opciones:")
-#    print("1. Establecimientos")
-#    print("2. Entretenimientos")
-#    print("3. Eventos")
-#    print("4. Administradores")
-#    print("5. Archivos")
-#    print("6. Categorías")
-#    print("7. Imágenes")
-#    opcion = int(input("Escribe tu opción: "))
-#    match opcion:
-#        case 4: menu_Admin()
-#        case 5: menu_archivos()
-#        case 6: menu_categorias()
-#
-#    print("Saliendo del sistema de Ruta Mágica ....")
 
 
-#if __name__ == "__main__":
-#    main()
+# def main():
+#     print("=== Menú Ruta Mágica ===")
+#     print("Menu de opciones:")
+#     print("1. Establecimientos")
+#     print("2. Entretenimientos")
+#     print("3. Eventos")
+#     print("4. Administradores")
+#     print("5. Archivos")
+#     print("6. Categorías")
+#     print("7. Imágenes")
+#     opcion = int(input("Escribe tu opción: "))
+#     match opcion:
+#         case 1: menu_establecimientos()
+#         case 2: menu_entrenimientos()
+#         case 3: menu_eventos()
+#         case 4: menu_Admin()
+#         case 5: menu_archivos()
+#         case 6: menu_categorias()
+#         case 7: menu_imagenes()
 
-def main():
-    print("=== Menú Ruta Mágica ===")
-    print("Menu de opciones:")
-    print("1. Establecimientos")
-    print("2. Entretenimientos")
-    print("3. Eventos")
-    print("4. Administradores")
-    print("5. Archivos")
-    print("6. Categorías")
-    print("7. Imágenes")
-    opcion = int(input("Escribe tu opción: "))
-    match opcion:
-        case 1: menu_establecimientos()
-        case 2: menu_entrenimientos()
-        case 3: menu_eventos()
-        case 4: menu_Admin()
-        case 5: menu_archivos()
-        case 6: menu_categorias()
-        case 7: menu_imagenes()
-
-    print("Saliendo del sistema de Ruta Mágica ....")
+#     print("Saliendo del sistema de Ruta Mágica ....")
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
