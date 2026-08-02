@@ -1,151 +1,213 @@
-"""
-dao/imagen_dao.py
---------------------
-Acceso a datos para la tabla `imagenes` (galería de fotos de
-establecimientos, eventos y entretenimiento). Sigue el mismo CRUD
-estándar del proyecto, más algunos métodos propios de una galería:
-- obtener_por_entidad(): trae todas las fotos de un registro específico.
-- obtener_principal(): trae solo la foto marcada como principal.
-- marcar_como_principal(): garantiza que solo haya UNA imagen principal
-  por entidad (desmarca las demás dentro de la misma transacción).
-- reordenar(): actualiza el orden de varias imágenes de una sola vez.
-"""
-
 from database.conexion import Conexion
 from models.imagen import Imagen
 
 
 class ImagenDAO:
-    """DAO con operaciones CRUD y de galería sobre la tabla imagenes."""
 
-    # ------------------------------------------------------------
-    # CRUD estándar
-    # ------------------------------------------------------------
-
-    def obtener_todo(self, ):
-            """Devuelve todas las imágenes registradas (uso administrativo)."""
-            conexion = Conexion.obtener_conexion()
-            cursor = conexion.cursor()
-
-            registros = cursor.fetchall()
-            
-            cursor.execute("SELECT * FROM imagenes")
-
-            imagen = []
-            for registro in registros:
-                imagen = Imagen(
-                    id = registro[0],
-                    id_establecimiento = registro[1],
-                    id_entretenimiento = registro[2],
-                    id_evento = registro[3],
-                    url_imagen= registro[4],
-                    public_id= registro[5],                  
-                    admin= registro[6],
-            )
-
-            imagen.append(imagen)
-            cursor.close()
-            conexion.close()
-            return imagen                  
-
-    def insertar(self, imagen):
-        """Inserta una nueva imagen y devuelve el id generado."""
+    def obtener_todo(self):
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
+
+        try:
+            # Primero se ejecuta la consulta y después fetchall()
+            cursor.execute("""
+                SELECT
+                    id,
+                    id_establecimiento,
+                    id_entretenimiento,
+                    id_evento,
+                    url_imagen,
+                    public_id,
+                    admin
+                FROM imagenes
+                ORDER BY id;
+            """)
+
+            registros = cursor.fetchall()
+            imagenes = []
+
+            for registro in registros:
+                imagen = Imagen(
+                    id=registro[0],
+                    id_establecimiento=registro[1],
+                    id_entretenimiento=registro[2],
+                    id_evento=registro[3],
+                    url_imagen=registro[4],
+                    public_id=registro[5],
+                    admin=registro[6],
+                )
+
+                imagenes.append(imagen)
+
+            return imagenes
+
+        finally:
+            cursor.close()
+            conexion.close()
+
+    def insertar(self, imagen):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
         sql = """
-            INSERT INTO imagenes (id, id_establecimiento, id_entretenimiento, id_evento, url_imagen, publid_id, admin)
+            INSERT INTO imagenes (
+                id,
+                id_establecimiento,
+                id_entretenimiento,
+                id_evento,
+                url_imagen,
+                public_id,
+                admin
+            )
             VALUES (%s, %s, %s, %s, %s, %s, %s)
             RETURNING id;
         """
 
-        cursor.execute(sql, (
-                imagen.id, 
-                imagen.id_establecimiento,
-                imagen.id_entretenimiento, 
-                imagen.id_evento, 
-                imagen.url_imagen, 
-                imagen.publid_id, 
-                imagen.admin,
-            ))
+        try:
+            cursor.execute(
+                sql,
+                (
+                    imagen.id,
+                    imagen.id_establecimiento,
+                    imagen.id_entretenimiento,
+                    imagen.id_evento,
+                    imagen.url_imagen,
+                    imagen.public_id,
+                    imagen.admin,
+                ),
+            )
 
-        conexion.commit()
-        cursor.close()
-        conexion.close()
+            id_insertado = cursor.fetchone()[0]
+            conexion.commit()
+
+            return id_insertado
+
+        except Exception:
+            conexion.rollback()
+            raise
+
+        finally:
+            cursor.close()
+            conexion.close()
 
     def actualizar(self, imagen):
-        """Actualiza una imagen existente (url, orden o si es principal)."""
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
+
         sql = """
             UPDATE imagenes
-               SET id = %s, id_establecimiento = %s, id_entretenimiento = %s, id_evento = %s, url_imagen = %s, publid_id = %s, admin = %s)
-             WHERE id = %s;
+            SET
+                id_establecimiento = %s,
+                id_entretenimiento = %s,
+                id_evento = %s,
+                url_imagen = %s,
+                public_id = %s,
+                admin = %s
+            WHERE id = %s;
         """
 
-        cursor.execute(sql, (
-                imagen.id, 
-                imagen.id_establecimiento,
-                imagen.id_entretenimiento, 
-                imagen.id_evento, 
-                imagen.url_imagen, 
-                imagen.publid_id, 
-                imagen.admin,
-            ))
-        conexion.commit()
-        cursor.close()
-        conexion.close()
+        try:
+            cursor.execute(
+                sql,
+                (
+                    imagen.id_establecimiento,
+                    imagen.id_entretenimiento,
+                    imagen.id_evento,
+                    imagen.url_imagen,
+                    imagen.public_id,
+                    imagen.admin,
+                    imagen.id,
+                ),
+            )
 
-    def eliminar(self, id_imagen: int) -> bool:
-        """Elimina una imagen por id (borra el registro, no el archivo físico)."""
+            conexion.commit()
+            return cursor.rowcount > 0
+
+        except Exception:
+            conexion.rollback()
+            raise
+
+        finally:
+            cursor.close()
+            conexion.close()
+
+    def eliminar(self, id_imagen):
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
-        
-        cursor.execute("DELETE FROM imagenes WHERE id = %s;", (id_imagen,))
 
-        conexion.commit()
-        cursor.close()
-        conexion.close()
+        try:
+            cursor.execute(
+                "DELETE FROM imagenes WHERE id = %s;",
+                (id_imagen,),
+            )
 
+            conexion.commit()
+            return cursor.rowcount > 0
 
-def buscar(self, texto):
-    conexion = Conexion.obtener_conexion()
-    cursor = conexion.cursor()
+        except Exception:
+            conexion.rollback()
+            raise
 
-    sql = """
-    SELECT * FROM imagenes
-    WHERE url ILIKE %s
-    ORDER BY entidad_tipo, entidad_id, orden
-    """
+        finally:
+            cursor.close()
+            conexion.close()
 
-    cursor.execute(sql, (f"%{texto}%",))
-
-    registros = cursor.fetchall()
-
-    imagenes = []
-    for registro in registros:
-        imagen = Imagen(
-            id = registro[0],
-            id_establecimiento = registro[1],
-            id_entretenimiento = registro[2],
-            id_evento = registro[3],
-            url_imagen= registro[4],
-            public_id= registro[5],                  
-            admin= registro[6],
-        )
-
-        imagenes.append(imagen)
-
-    cursor.close()
-    conexion.close()
-
-    return imagenes
-
-def obtener_ultimo_id(self):
+    def buscar(self, texto):
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
-        
-        cursor.execute("SELECT COALESCE(MAX(id), 0) AS ultimo FROM imagenes;")
-        resultado = cursor.fetchone()
-        
-        cursor.close()
-        conexion.close()
+
+        sql = """
+            SELECT
+                id,
+                id_establecimiento,
+                id_entretenimiento,
+                id_evento,
+                url_imagen,
+                public_id,
+                admin
+            FROM imagenes
+            WHERE url_imagen ILIKE %s
+            ORDER BY id;
+        """
+
+        try:
+            cursor.execute(sql, (f"%{texto}%",))
+            registros = cursor.fetchall()
+
+            imagenes = []
+
+            for registro in registros:
+                imagen = Imagen(
+                    id=registro[0],
+                    id_establecimiento=registro[1],
+                    id_entretenimiento=registro[2],
+                    id_evento=registro[3],
+                    url_imagen=registro[4],
+                    public_id=registro[5],
+                    admin=registro[6],
+                )
+
+                imagenes.append(imagen)
+
+            return imagenes
+
+        finally:
+            cursor.close()
+            conexion.close()
+
+    def obtener_ultimo_id(self):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        try:
+            cursor.execute("""
+                SELECT COALESCE(MAX(id), 0)
+                FROM imagenes;
+            """)
+
+            resultado = cursor.fetchone()
+            return resultado[0]
+
+        finally:
+            cursor.close()
+            conexion.close()

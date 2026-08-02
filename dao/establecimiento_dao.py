@@ -4,7 +4,7 @@ from psycopg2.extras import Json
 class EstablecimientoDAO:
 
  #SELCT * from
-    #==========================================================================================
+ # #==========================================================================================
 
     def obtener_todo(self):
         conexion = Conexion.obtener_conexion()

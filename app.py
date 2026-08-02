@@ -12,6 +12,9 @@ from dao.evento_dao import EventoDAO
 from models.evento import Evento
 from dao.imagen_dao import ImagenDAO
 from models.imagen import Imagen
+from ui.main_window import main_window
+import flet as ft
+
 #==========================================================================================
 #==========================================================================================
 
@@ -810,15 +813,39 @@ def menu_eventos():
 
     match opcion:
         case 1:
-            ver_imagenes()
+            ver_eventos()
         case 2:
-            insertar_imagenes()
+            insertar_eventos()
         case 3:
-            actualizar_imagen()
+            actualizar_evento()
         case 4:
-            eliminar_imagen()
+            eliminar_evento()
 
 #==========================================================================================
+
+#==========================================================================================
+ft.app(target=main_window)
+#def main():
+#    print("=== Menú Ruta Mágica ===")
+#    print("Menu de opciones:")
+#    print("1. Establecimientos")
+#    print("2. Entretenimientos")
+#    print("3. Eventos")
+#    print("4. Administradores")
+#    print("5. Archivos")
+#    print("6. Categorías")
+#    print("7. Imágenes")
+#    opcion = int(input("Escribe tu opción: "))
+#    match opcion:
+#        case 4: menu_Admin()
+#        case 5: menu_archivos()
+#        case 6: menu_categorias()
+#
+#    print("Saliendo del sistema de Ruta Mágica ....")
+
+
+#if __name__ == "__main__":
+#    main()
 
 def main():
     print("=== Menú Ruta Mágica ===")
@@ -838,7 +865,7 @@ def main():
         case 4: menu_Admin()
         case 5: menu_archivos()
         case 6: menu_categorias()
-        case 7: menu_imagenes
+        case 7: menu_imagenes()
 
     print("Saliendo del sistema de Ruta Mágica ....")
 
