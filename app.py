@@ -738,6 +738,46 @@ def menu_entrenimientos():
             eliminar_entretenimeinto()
 
 #==========================================================================================
+
+#==========================================================================================
+
+def menu_archivos():
+    print("1. Ver archivos")
+    print("2. Insertar archivo")
+    print("3. Actualizar archivos")
+    print("4. Eliminar archivo(s)")
+    opcion = int(input("Selecciona una opción (1-4):"))
+
+    match opcion:
+        case 1:
+            ver_archivos()
+        case 2:
+            insertar_archivos()
+        case 3:
+            actualizar_archivo()
+        case 4:
+            eliminar_archivo()
+
+#==========================================================================================
+
+def menu_categorias():
+    print("1. Ver categorías")
+    print("2. Insertar categoría")
+    print("3. Actualizar categorías")
+    print("4. Eliminar categorías")
+    opcion = int(input("Selecciona una opción (1-4):"))
+
+    match opcion:
+        case 1:
+            ver_categorias()
+        case 2:
+            insertar_categorias()
+        case 3:
+            actualizar_categoria()
+        case 4:
+            eliminar_categoria()
+
+#==========================================================================================
 #==========================================================================================
 
 def menu_imagenes():
@@ -745,6 +785,27 @@ def menu_imagenes():
     print("2. Insertar imagen")
     print("3. Actualizar imágenes")
     print("4. Eliminar imágenes")
+    opcion = int(input("Selecciona una opción (1-4):"))
+
+    match opcion:
+        case 1:
+            ver_imagenes()
+        case 2:
+            insertar_imagenes()
+        case 3:
+            actualizar_imagen()
+        case 4:
+            eliminar_imagen()
+
+#==========================================================================================
+
+#==========================================================================================
+
+def menu_eventos():
+    print("1. Ver eventos")
+    print("2. Insertar evento")
+    print("3. Actualizar eventos")
+    print("4. Eliminar eventos")
     opcion = int(input("Selecciona una opción (1-4):"))
 
     match opcion:
@@ -771,9 +832,13 @@ def main():
     print("7. Imágenes")
     opcion = int(input("Escribe tu opción: "))
     match opcion:
+        case 1: menu_establecimientos()
+        case 2: menu_entrenimientos()
+        case 3: menu_eventos()
         case 4: menu_Admin()
         case 5: menu_archivos()
         case 6: menu_categorias()
+        case 7: menu_imagenes
 
     print("Saliendo del sistema de Ruta Mágica ....")
 
