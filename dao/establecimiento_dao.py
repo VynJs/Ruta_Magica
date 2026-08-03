@@ -105,9 +105,9 @@ class EstablecimientoDAO:
         sql = """
             UPDATE establecimiento SET
             nombre_establecimiento = %s, categoria = %s, horario_inicio = %s, horario_fin = %s, direccion = %s, mapa = POINT(%s, %s), 
-            nombre_propietario = %s, edad, telefono = %s, correo = %s, descripcion_corta = %s, descripcion_completa = %s,
+            nombre_propietario = %s, edad = %s, telefono = %s, correo = %s, descripcion_corta = %s, descripcion_completa = %s,
             caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s, instagram = %s, facebook = %s,
-            pagina_web, estado = %s, servicios = %s, rango_precios = %s, productos_ofrecer = %s,
+            pagina_web = %s, estado = %s, servicios = %s, rango_precios = %s, productos_ofrecer = %s
             WHERE id = %s
         """
         cursor.execute(sql, (
@@ -178,7 +178,7 @@ class EstablecimientoDAO:
         cursor = conexion.cursor()
 
         sql = """
-        SELECT * FROM establecimientos
+        SELECT * FROM establecimiento
         WHERE nombre ILIKE %s
         ORDER BY nombre
         """
@@ -189,7 +189,7 @@ class EstablecimientoDAO:
 
         establecimientos = []
         for registro in registros:
-            Establecimiento = Establecimiento(
+            establecimiento = Establecimiento(
                 id = registro[0],
                 nombre_establecimiento = registro[1],
                 categoria = registro[2],

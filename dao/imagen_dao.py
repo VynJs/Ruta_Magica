@@ -18,7 +18,6 @@ class ImagenDAO:
                     id_evento,
                     url_imagen,
                     public_id,
-                    admin
                 FROM imagenes
                 ORDER BY id;
             """)
@@ -33,8 +32,8 @@ class ImagenDAO:
                     id_entretenimiento=registro[2],
                     id_evento=registro[3],
                     url_imagen=registro[4],
-                    public_id=registro[5],
-                    admin=registro[6],
+                    public_id=registro[5]
+
                 )
 
                 imagenes.append(imagen)
@@ -57,7 +56,6 @@ class ImagenDAO:
                 id_evento,
                 url_imagen,
                 public_id,
-                admin
             )
             VALUES (%s, %s, %s, %s, %s, %s, %s)
             RETURNING id;
@@ -72,8 +70,7 @@ class ImagenDAO:
                     imagen.id_entretenimiento,
                     imagen.id_evento,
                     imagen.url_imagen,
-                    imagen.public_id,
-                    imagen.admin,
+                    imagen.public_id
                 ),
             )
 
@@ -101,8 +98,7 @@ class ImagenDAO:
                 id_entretenimiento = %s,
                 id_evento = %s,
                 url_imagen = %s,
-                public_id = %s,
-                admin = %s
+                public_id = %s
             WHERE id = %s;
         """
 
@@ -115,8 +111,7 @@ class ImagenDAO:
                     imagen.id_evento,
                     imagen.url_imagen,
                     imagen.public_id,
-                    imagen.admin,
-                    imagen.id,
+                    imagen.id
                 ),
             )
 
@@ -164,7 +159,6 @@ class ImagenDAO:
                 id_evento,
                 url_imagen,
                 public_id,
-                admin
             FROM imagenes
             WHERE url_imagen ILIKE %s
             ORDER BY id;

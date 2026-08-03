@@ -125,9 +125,9 @@ class CategoriaDAO:
             categoria = Categoria(
                 id=registro[0],
                 nombre=registro[1],
-                tipo_categoria=[2],
-                descripcion=[3],
-                estado=[4]
+                tipo_categoria=registro[2],
+                descripcion=registro[3],
+                estado=registro[4]
             )
             categorias.append(categoria)
 

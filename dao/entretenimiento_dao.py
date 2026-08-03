@@ -12,7 +12,7 @@ class EntretenimientoDAO:
 
         registros = cursor.fetchall()
 
-        entretenimiento = []
+        entretenimientos = []
         for registro in registros:
             entretenimiento = Entretenimiento(
                 id = registro[0],
@@ -43,16 +43,15 @@ class EntretenimientoDAO:
                 recomendacion_3= registro[25],
                 instagram= registro[26],
                 facebook= registro[27],
-                pagina_web= registro[28],
-                admin= registro[29],
+                pagina_web= registro[28]
             )
 
             
 
-        entretenimiento.append(entretenimiento)
+        entretenimientos.append(entretenimiento)
         cursor.close()
         conexion.close()
-        return entretenimiento
+        return entretenimientos
             
 
     def insertar(self, entretenimiento):
@@ -65,7 +64,7 @@ class EntretenimientoDAO:
                 descripcion_corta, descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3,
                 capacidad, precio, servicio_1, servicio_2, servicio_3, servicio_4, servicio_5,
                 recomendacion_1, recomendacion_2, recomendacion_3, recomendacion_4, instagram, facebook,
-                pagina_web, admin
+                pagina_web
             ) VALUES (
                 %s, %s, %s, %s, %s, %s, POINT(%s,%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
             ) 
@@ -100,9 +99,7 @@ class EntretenimientoDAO:
             entretenimiento.recomendacion_3,
             entretenimiento.recomendacion_4,
             entretenimiento.instagram,
-            entretenimiento.pagina_web,
-            entretenimiento.admin, 
-            entretenimiento.folio,
+            entretenimiento.pagina_web
             ))
         conexion.commit()
         cursor.close()
@@ -119,7 +116,7 @@ class EntretenimientoDAO:
             descripcion_corta = %s, descripcion_completa = %s, caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s,
             capacidad = %s, precio = %s, servicio_1 = %s, servicio_2 = %s, servicio_3 = %s, servicio_4 = %s, servicio_5 = %s,
             recomendacion_1 = %s, recomendacion_2 = %s, recomendacion_3 = %s, recomendacion_4 = %s, instagram = %s, facebook = %s,
-            pagina_web = %s, admin = %s
+            pagina_web = %s
             WHERE id = %s;
         """    
         cursor.execute(sql, (
@@ -151,9 +148,7 @@ class EntretenimientoDAO:
             entretenimiento.recomendacion_3,
             entretenimiento.recomendacion_4,
             entretenimiento.instagram,
-            entretenimiento.pagina_web,
-            entretenimiento.admin, 
-            entretenimiento.folio,
+            entretenimiento.pagina_web
             ))
         conexion.commit()
         cursor.close()
@@ -184,7 +179,7 @@ class EntretenimientoDAO:
 
         registros = cursor.fetchall()
 
-        entretenimiento = []
+        entretenimientos = []
         for registro in registros:
             entretenimiento = Entretenimiento(
                 id = registro[0],
@@ -215,15 +210,14 @@ class EntretenimientoDAO:
                 recomendacion_3= registro[25],
                 instagram= registro[26],
                 facebook= registro[27],
-                pagina_web= registro[28],
-                admin= registro[29],
+                pagina_web= registro[28]
             )
-            entretenimiento.append(entretenimiento)
+            entretenimientos.append(entretenimiento)
 
         cursor.close()
         conexion.close()
 
-        return entretenimiento
+        return entretenimientos
 
     def obtener_ultimo_id(self):
         conexion = Conexion.obtener_conexion()
@@ -234,6 +228,10 @@ class EntretenimientoDAO:
 
         cursor.close()
         conexion.close()
+
+        if resultado[0] is None:
+            return 0
+        return resultado[0]
 
     def cambiar_estado(self, entretenimiento):
         conexion = Conexion.obtener_conexion()
