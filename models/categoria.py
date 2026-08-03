@@ -2,7 +2,7 @@ class Categoria:
 
     #constructor
 
-    def _init_(self, id, nombre,tipo_categoria, descripcion, estado):
+    def __init__(self, id, nombre,tipo_categoria, descripcion, estado):
         self.id = id
         self.nombre = nombre
         self.tipo_categoria = tipo_categoria

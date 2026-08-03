@@ -1,7 +1,7 @@
 class Evento:
 
     #constructor
-    def _init_(self, id, nombre_evento, categoria, fecha, horario_inicio, horario_fin, ubicacion, mapa, nombre_organizador, edad, telefono, correo, descripcion_corta, descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, instagram, facebook, pagina_web, estado, datos_destacados):
+    def __init__(self, id, nombre_evento, categoria, fecha, horario_inicio, horario_fin, ubicacion, mapa, nombre_organizador, edad, telefono, correo, descripcion_corta, descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, instagram, facebook, pagina_web, estado, datos_destacados):
         self.id = id
         self.nombre_evento = nombre_evento
         self.categoria = categoria

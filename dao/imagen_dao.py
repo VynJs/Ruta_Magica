@@ -183,8 +183,7 @@ class ImagenDAO:
                     id_entretenimiento=registro[2],
                     id_evento=registro[3],
                     url_imagen=registro[4],
-                    public_id=registro[5],
-                    admin=registro[6],
+                    public_id=registro[5]
                 )
 
                 imagenes.append(imagen)

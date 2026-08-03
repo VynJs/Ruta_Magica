@@ -1,7 +1,7 @@
 class Establecimiento:
 
     #constructor
-    def _init_(self, id, nombre_establecimiento, categoria, horario_inicio, horario_fin, direccion, mapa, nombre_propietario, edad, telefono, correo, descripcion_corta, descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, instagram, facebook, pagina_web, estado, servicios, rango_precios, productos_ofrecer):
+    def __init__(self, id, nombre_establecimiento, categoria, horario_inicio, horario_fin, direccion, mapa, nombre_propietario, edad, telefono, correo, descripcion_corta, descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, instagram, facebook, pagina_web, estado, servicios, rango_precios, productos_ofrecer):
         self.id = id
         self.nombre_establecimiento = nombre_establecimiento
         self.categoria = categoria

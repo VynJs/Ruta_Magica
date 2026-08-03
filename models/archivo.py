@@ -2,7 +2,7 @@ class Archivo:
 
     #constructor
     
-        def _init_(self, id, id_establecimiento, id_entretenimiento, id_evento, nombre_archivo, extencion, tipo_archivo, url_archivo, public_id, fecha_subida):
+        def __init__(self, id, id_establecimiento, id_entretenimiento, id_evento, nombre_archivo, extencion, tipo_archivo, url_archivo, public_id, fecha_subida):
             self.id = id
             self.id_establecimiento = id_establecimiento
             self.id_entretenimiento = id_entretenimiento

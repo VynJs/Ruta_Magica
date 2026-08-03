@@ -67,8 +67,8 @@ class EventoDAO:
             evento.nombre_evento,
             evento.categoria,
             evento.fecha,
-            evento.hora_inicio,
-            evento.hora_fin,
+            evento.horario_inicio,
+            evento.horario_fin,
             evento.ubicacion,
             evento.longitud,
             evento.latitud,
@@ -77,6 +77,7 @@ class EventoDAO:
             evento.telefono,
             evento.correo,
             evento.descripcion_corta,
+            evento.descripcion_completa,
             evento.caracteristica_1,
             evento.caracteristica_2,
             evento.caracteristica_3,
@@ -110,8 +111,8 @@ class EventoDAO:
                         evento.nombre_evento,
                         evento.categoria,
                         evento.fecha,
-                        evento.hora_inicio,
-                        evento.hora_fin,
+                        evento.horario_inicio,
+                        evento.horario_fin,
                         evento.ubicacion,
                         evento.ubicacion,
                         evento.longitud,
@@ -184,8 +185,30 @@ class EventoDAO:
         eventos = []
         for registro in registros:
             evento = Evento(
-                id=registro[0],
-                nombre=registro[1]
+                id = registro[0],
+                nombre_evento= registro[1],
+                categoria = registro[2],
+                fecha = registro[3],
+                horario_inicio= registro[4],
+                horario_fin= registro[5],
+                ubicacion= registro[6],
+                latitud = registro[7],
+                longitud = registro[8],
+                nombre_organizador= registro[9],
+                edad= registro[10],
+                telefono = registro[11],
+                correo = registro[12],
+                descripcion_corta = registro[13],
+                descripcion_completa = registro[14],
+                caracteristica_1 = registro[15],
+                caracteristica_2 = registro[16],
+                caracteristica_3 = registro[17],
+                instagram = registro[18],
+                facebook = registro[19],
+                pagina_web = registro[20],
+                estado = registro[21],
+                datos_destacados = registro[22]
+
             )
             eventos.append(evento)
 
@@ -207,7 +230,7 @@ class EventoDAO:
         """
 
         cursor.execute(sql, (
-                        evento.activo,
+                        evento.estado,
                         evento.id
         ))
 

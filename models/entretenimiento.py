@@ -2,7 +2,7 @@ class Entretenimiento:
 
     #constructor
 
-    def _init_(self, id, nombre_entretenimeinto, categoria, horario_inicio, horario_fin, direccion, latitud, longitud, nombre_responsable, telefono, correo, descripcion_corta, descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, capacidad, precio, servicio_1, servicio_2, servicio_3, servicio_4, servicio_5, recomendacion_1, recomendacion_2, recomendacion_3,recomendacion_4, instagram, facebook, pagina_web):
+    def __init__(self, id, nombre_entretenimeinto, categoria, horario_inicio, horario_fin, direccion, latitud, longitud, nombre_responsable, telefono, correo, descripcion_corta, descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, capacidad, precio, servicio_1, servicio_2, servicio_3, servicio_4, servicio_5, recomendacion_1, recomendacion_2, recomendacion_3,recomendacion_4, instagram, facebook, pagina_web):
         self.id = id
         self.nombre_entretenimiento = nombre_entretenimeinto
         self.categoria = categoria

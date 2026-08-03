@@ -187,8 +187,36 @@ class EntretenimientoDAO:
         entretenimiento = []
         for registro in registros:
             entretenimiento = Entretenimiento(
-                id=registro[0],
-                nombre=registro[1]
+                id = registro[0],
+                nombre_entretenimeinto = registro[1],
+                categoria = registro[2],
+                horario_inicio = registro[3],
+                horario_fin= registro[4],
+                direccion= registro[5],
+                latitud = registro[6],
+                longitud = registro[7],
+                nombre_responsable= registro[8],
+                telefono= registro[9],
+                correo= registro[10],
+                descripcion_corta= registro[11],
+                descripcion_completa= registro[12],
+                caracteristica_1= registro[13],
+                caracteristica_2= registro[14],
+                caracteristica_3= registro[15],
+                capacidad= registro[16],
+                precio= registro[17],
+                servicio_1= registro[18],
+                servicio_2= registro[19],
+                servicio_3= registro[20],
+                servicio_4= registro[21],
+                servicio_5= registro[22],
+                recomendacion_1= registro[23],
+                recomendacion_2= registro[24],
+                recomendacion_3= registro[25],
+                instagram= registro[26],
+                facebook= registro[27],
+                pagina_web= registro[28],
+                admin= registro[29],
             )
             entretenimiento.append(entretenimiento)
 

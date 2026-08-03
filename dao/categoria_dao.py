@@ -63,7 +63,6 @@ class CategoriaDAO:
         WHERE id = %s;
         """
         cursor.execute(sql, (
-                        categoria.titulo,
                         categoria.nombre,
                         categoria.tipo_categoria,
                         categoria.descripcion,
@@ -125,7 +124,10 @@ class CategoriaDAO:
         for registro in registros:
             categoria = Categoria(
                 id=registro[0],
-                nombre=registro[1]
+                nombre=registro[1],
+                tipo_categoria=[2],
+                descripcion=[3],
+                estado=[4]
             )
             categorias.append(categoria)
 
@@ -147,7 +149,7 @@ class CategoriaDAO:
         """
 
         cursor.execute(sql, (
-                        categoria.activo,
+                        categoria.estado,
                         categoria.id
         ))
 

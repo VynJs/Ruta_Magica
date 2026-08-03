@@ -190,8 +190,30 @@ class EstablecimientoDAO:
         establecimientos = []
         for registro in registros:
             Establecimiento = Establecimiento(
-                id=registro[0],
-                nombre=registro[1]
+                id = registro[0],
+                nombre_establecimiento = registro[1],
+                categoria = registro[2],
+                horario_inicio = registro[3],
+                horario_fin= registro[4],
+                direccion= registro[5],
+                latitud = registro[6],
+                longitud = registro[7],
+                nombre_propietario= registro[8],
+                edad= registro[9],
+                telefono= registro[10],
+                correo= registro[11],
+                descripcion_corta= registro[12],
+                descripcion_completa= registro[13],
+                caracteristica_1= registro[14],
+                caracteristica_2= registro[15],
+                caracteristica_3= registro[16],
+                instagram= registro[17],
+                facebook= registro[18],
+                pagina_web= registro[19],
+                estado= registro[20],
+                servicios= registro[21],
+                rango_precios= registro[22],
+                productos_ofrecer= registro[23]
             )
             establecimientos.append(Establecimiento)
 
@@ -213,7 +235,7 @@ class EstablecimientoDAO:
         """
 
         cursor.execute(sql, (
-                        establecimiento.activo,
+                        establecimiento.estado,
                         establecimiento.id
         ))
 
