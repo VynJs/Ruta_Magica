@@ -35,21 +35,21 @@ def _sidebar(page: ft.Page, seleccionado: str) -> ft.Container:
                 ft.Text("R⁘M", color=BTN_GREEN, size=22, weight=ft.FontWeight.BOLD),
                 ft.Text("Ruta Mágica", color=TEXT, size=12, italic=True),
                 ft.Container(height=15),
-                item(ft.icons.HOME_OUTLINED, "Inicio", "/home", "inicio"),
-                item(ft.icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes", "reportes"),
-                item(ft.icons.EVENT_OUTLINED, "Gestión Eventos", "/admin/eventos", "gestion_eventos"),
-                item(ft.icons.STOREFRONT_OUTLINED, "Gestión Estable.", "/admin/establecimientos", "gestion_establecimientos"),
-                item(ft.icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento", "gestion_entretenimiento"),
-                item(ft.icons.CATEGORY_OUTLINED, "Gestión Cat.", "/admin/categorias", "gestion_categorias"),
+                item(ft.Icons.HOME_OUTLINED, "Inicio", "/home", "inicio"),
+                item(ft.Icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes", "reportes"),
+                item(ft.Icons.EVENT_OUTLINED, "Gestión Eventos", "/admin/eventos", "gestion_eventos"),
+                item(ft.Icons.STOREFRONT_OUTLINED, "Gestión Estable.", "/admin/establecimientos", "gestion_establecimientos"),
+                item(ft.Icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento", "gestion_entretenimiento"),
+                item(ft.Icons.CATEGORY_OUTLINED, "Gestión Cat.", "/admin/categorias", "gestion_categorias"),
                 ft.Divider(color=BORDER),
-                item(ft.icons.STOREFRONT, "Establecimientos", "/establecimientos", "establecimientos"),
-                item(ft.icons.EVENT, "Eventos", "/eventos", "eventos"),
-                item(ft.icons.STAR_BORDER, "Entretenimiento", "/entretenimiento", "entretenimiento"),
+                item(ft.Icons.STOREFRONT, "Establecimientos", "/establecimientos", "establecimientos"),
+                item(ft.Icons.EVENT, "Eventos", "/eventos", "eventos"),
+                item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento", "entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.icons.SETTINGS_OUTLINED, "Configuración", None, "config"),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None, "config"),
                 ft.Divider(color=BORDER),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
+                    content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
                     padding=ft.padding.symmetric(horizontal=15, vertical=10), on_click=cerrar_sesion,
                 ),
             ],
@@ -89,7 +89,7 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
     def mostrar_detalle(est):
         panel_detalle.controls.clear()
         panel_detalle.controls.extend([
-            ft.Container(content=ft.Icon(ft.icons.IMAGE_OUTLINED, size=40, color="#666"),
+            ft.Container(content=ft.Icon(ft.Icons.IMAGE_OUTLINED, size=40, color="#666"),
                          bgcolor="#DDDDDD", height=90, width=90, alignment=ft.alignment.center),
             ft.Text(est.nombre_establecimiento, color=TEXT, size=18, weight=ft.FontWeight.BOLD),
             ft.Container(content=ft.Text(str(est.estado), color=BG, size=11), bgcolor=BTN_GREEN,
@@ -103,9 +103,9 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
             ft.Row([ft.Text("Horario:", color=TEXT), ft.Text(f"{est.horario_inicio} - {est.horario_fin}", color=MUTED)]),
             ft.Container(height=10),
             ft.Row([
-                ft.ElevatedButton("Editar establecimiento", icon=ft.icons.EDIT_OUTLINED,
+                ft.ElevatedButton("Editar establecimiento", icon=ft.Icons.EDIT_OUTLINED,
                                   style=ft.ButtonStyle(bgcolor=GOLD, color=BG), on_click=lambda e: ir_a_editar(est.id)),
-                ft.OutlinedButton("Enviar mensaje", icon=ft.icons.MAIL_OUTLINE, style=ft.ButtonStyle(color=TEXT),
+                ft.OutlinedButton("Enviar mensaje", icon=ft.Icons.MAIL_OUTLINE, style=ft.ButtonStyle(color=TEXT),
                                   on_click=lambda e: ir_a_ver(est.id)),
             ]),
         ])
@@ -126,11 +126,11 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
                     ft.Container(content=ft.Text(str(est.estado), color=BG, size=11), bgcolor=color_estado,
                                  border_radius=10, padding=ft.padding.symmetric(horizontal=8, vertical=2), width=90),
                     ft.Row([
-                        ft.IconButton(ft.icons.VISIBILITY_OUTLINED, icon_color=BTN_GREEN, icon_size=18,
+                        ft.IconButton(ft.Icons.VISIBILITY_OUTLINED, icon_color=BTN_GREEN, icon_size=18,
                                       on_click=lambda e, x=est: mostrar_detalle(x)),
-                        ft.IconButton(ft.icons.EDIT_OUTLINED, icon_color=GOLD, icon_size=18,
+                        ft.IconButton(ft.Icons.EDIT_OUTLINED, icon_color=GOLD, icon_size=18,
                                       on_click=lambda e, x=est: ir_a_editar(x.id)),
-                        ft.IconButton(ft.icons.DELETE_OUTLINE, icon_color=ROJO, icon_size=18,
+                        ft.IconButton(ft.Icons.DELETE_OUTLINE, icon_color=ROJO, icon_size=18,
                                       on_click=lambda e, x=est: eliminar(x.id)),
                     ]),
                 ],
@@ -144,7 +144,7 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
             EstablecimientoDAO().eliminar(id_est)
             cargar_lista()
         except Exception as ex:
-            panel_detalle.controls = [ft.Text(f"No se pudo eliminar: {ex}", color=ft.colors.RED_300)]
+            panel_detalle.controls = [ft.Text(f"No se pudo eliminar: {ex}", color=ft.Colors.RED_300)]
             page.update()
 
     contador = {"total": 0, "aprobados": 0, "revision": 0, "rechazados": 0}
@@ -166,7 +166,7 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
                 tabla_filas.controls.append(_fila(est))
                 tabla_filas.controls.append(ft.Divider(color=BORDER, height=1))
         except Exception as ex:
-            tabla_filas.controls.append(ft.Text(f"No se pudo cargar: {ex}", color=ft.colors.RED_300))
+            tabla_filas.controls.append(ft.Text(f"No se pudo cargar: {ex}", color=ft.Colors.RED_300))
         page.update()
 
     cargar_lista()
@@ -176,7 +176,7 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
             ft.Column([ft.Text("Establecimientos", color=GOLD, size=26, weight=ft.FontWeight.BOLD),
                        ft.Text("Administra, edita, actualiza y agrega nuevos establecimientos.", color=MUTED)], spacing=0),
             ft.Row([
-                ft.Icon(ft.icons.ACCOUNT_CIRCLE_OUTLINED, color=GOLD, size=32),
+                ft.Icon(ft.Icons.ACCOUNT_CIRCLE_OUTLINED, color=GOLD, size=32),
                 ft.Column([ft.Text(f"Hola, {nombre_usuario}", color=TEXT), ft.Text("Administrador", color=MUTED, size=11)], spacing=0),
             ]),
         ],
@@ -185,15 +185,15 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
 
     tarjetas = ft.Row(
         [
-            _tarjeta_stat(ft.icons.STOREFRONT_OUTLINED, "Total establecimientos", contador["total"], "Registrados en la plataforma"),
-            _tarjeta_stat(ft.icons.CHECK_CIRCLE_OUTLINE, "Aprobados", contador["aprobados"], "Activos y visibles", BTN_GREEN),
-            _tarjeta_stat(ft.icons.AUTORENEW, "En revisión", contador["revision"], "Pendientes de aprobación", GOLD),
-            _tarjeta_stat(ft.icons.CANCEL_OUTLINED, "Rechazados", contador["rechazados"], "No cumplieron requisitos", ROJO),
+            _tarjeta_stat(ft.Icons.STOREFRONT_OUTLINED, "Total establecimientos", contador["total"], "Registrados en la plataforma"),
+            _tarjeta_stat(ft.Icons.CHECK_CIRCLE_OUTLINE, "Aprobados", contador["aprobados"], "Activos y visibles", BTN_GREEN),
+            _tarjeta_stat(ft.Icons.AUTORENEW, "En revisión", contador["revision"], "Pendientes de aprobación", GOLD),
+            _tarjeta_stat(ft.Icons.CANCEL_OUTLINED, "Rechazados", contador["rechazados"], "No cumplieron requisitos", ROJO),
         ],
         wrap=True, spacing=12,
     )
 
-    buscador = ft.TextField(hint_text="Buscar establecimiento...", prefix_icon=ft.icons.SEARCH,
+    buscador = ft.TextField(hint_text="Buscar establecimiento...", prefix_icon=ft.Icons.SEARCH,
                              bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8, width=260)
 
     lista_container = ft.Container(
@@ -201,7 +201,7 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
             [
                 ft.Text("Lista de establecimientos", color=TEXT, size=16, weight=ft.FontWeight.BOLD),
                 ft.Row([buscador, ft.Dropdown(hint_text="Categoría", width=140, bgcolor=BG, border_color=BORDER, color=TEXT, options=[]),
-                        ft.OutlinedButton("Filtra", icon=ft.icons.FILTER_ALT_OUTLINED, style=ft.ButtonStyle(color=TEXT))]),
+                        ft.OutlinedButton("Filtra", icon=ft.Icons.FILTER_ALT_OUTLINED, style=ft.ButtonStyle(color=TEXT))]),
                 ft.Divider(color=BORDER),
                 tabla_filas,
             ]

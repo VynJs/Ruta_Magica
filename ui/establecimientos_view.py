@@ -16,7 +16,7 @@ def _tarjeta(nombre: str, estrellas: int = 5) -> ft.Container:
         content=ft.Column(
             [
                 ft.Container(
-                    content=ft.Icon(ft.icons.IMAGE_OUTLINED, size=45, color="#666"),
+                    content=ft.Icon(ft.Icons.IMAGE_OUTLINED, size=45, color="#666"),
                     bgcolor="#DDDDDD",
                     height=150,
                     alignment=ft.alignment.center,
@@ -31,7 +31,7 @@ def _tarjeta(nombre: str, estrellas: int = 5) -> ft.Container:
                                 ],
                                 spacing=2,
                             ),
-                            ft.Icon(ft.icons.CHEVRON_RIGHT, color=GOLD),
+                            ft.Icon(ft.Icons.CHEVRON_RIGHT, color=GOLD),
                         ],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     ),
@@ -51,7 +51,7 @@ def establecimientos_view(page: ft.Page) -> ft.View:
 
     buscador = ft.TextField(
         hint_text="Buscar establecimiento...",
-        prefix_icon=ft.icons.SEARCH,
+        prefix_icon=ft.Icons.SEARCH,
         bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8,
         width=300,
     )
@@ -71,7 +71,7 @@ def establecimientos_view(page: ft.Page) -> ft.View:
             establecimientos = dao.obtener_todo()
         except Exception as ex:
             filas_por_categoria.controls.append(
-                ft.Text(f"No se pudo cargar la información: {ex}", color=ft.colors.RED_300)
+                ft.Text(f"No se pudo cargar la información: {ex}", color=ft.Colors.RED_300)
             )
             return
 
@@ -89,7 +89,7 @@ def establecimientos_view(page: ft.Page) -> ft.View:
 
         for categoria_nombre, lista in agrupados.items():
             filas_por_categoria.controls.append(
-                ft.Row([ft.Icon(ft.icons.RESTAURANT_MENU, color=BTN_GREEN),
+                ft.Row([ft.Icon(ft.Icons.RESTAURANT_MENU, color=BTN_GREEN),
                         ft.Text(categoria_nombre, color=BTN_GREEN, size=18, weight=ft.FontWeight.BOLD)])
             )
             filas_por_categoria.controls.append(
@@ -104,7 +104,7 @@ def establecimientos_view(page: ft.Page) -> ft.View:
 
     encabezado = ft.Row(
         [
-            ft.IconButton(ft.icons.MENU, icon_color=GOLD, on_click=lambda e: page.go("/home")),
+            ft.IconButton(ft.Icons.MENU, icon_color=GOLD, on_click=lambda e: page.go("/home")),
             ft.Column(
                 [
                     ft.Text("R⁘M", size=22, color=BTN_GREEN, weight=ft.FontWeight.BOLD),
@@ -114,8 +114,8 @@ def establecimientos_view(page: ft.Page) -> ft.View:
             ),
             ft.Row(
                 [
-                    ft.Column([ft.Icon(ft.icons.FAVORITE_BORDER, color=GOLD), ft.Text("Favoritos", color=TEXT, size=11)]),
-                    ft.Column([ft.Icon(ft.icons.ACCOUNT_CIRCLE_OUTLINED, color=GOLD), ft.Text("Cuenta", color=TEXT, size=11)]),
+                    ft.Column([ft.Icon(ft.Icons.FAVORITE_BORDER, color=GOLD), ft.Text("Favoritos", color=TEXT, size=11)]),
+                    ft.Column([ft.Icon(ft.Icons.ACCOUNT_CIRCLE_OUTLINED, color=GOLD), ft.Text("Cuenta", color=TEXT, size=11)]),
                 ],
                 spacing=15,
             ),
@@ -123,11 +123,11 @@ def establecimientos_view(page: ft.Page) -> ft.View:
         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
     )
 
-    titulo = ft.Row([ft.Icon(ft.icons.STOREFRONT_OUTLINED, color=TEXT, size=26),
+    titulo = ft.Row([ft.Icon(ft.Icons.STOREFRONT_OUTLINED, color=TEXT, size=26),
                      ft.Text("Establecimientos", color=TEXT, size=26, weight=ft.FontWeight.BOLD)])
 
     barra_filtros = ft.Row(
-        [buscador, categoria_dd, ft.OutlinedButton("Filtros", icon=ft.icons.FILTER_ALT_OUTLINED,
+        [buscador, categoria_dd, ft.OutlinedButton("Filtros", icon=ft.Icons.FILTER_ALT_OUTLINED,
                                                      style=ft.ButtonStyle(color=TEXT))],
         alignment=ft.MainAxisAlignment.END,
     )
@@ -145,10 +145,10 @@ def establecimientos_view(page: ft.Page) -> ft.View:
                         ft.TextButton("Contáctanos", style=ft.ButtonStyle(color=MUTED)),
                     ]),
                     ft.Row([
-                        ft.IconButton(ft.icons.FACEBOOK, icon_color=GOLD),
-                        ft.IconButton(ft.icons.CAMERA_ALT_OUTLINED, icon_color=GOLD),
-                        ft.IconButton(ft.icons.EMAIL_OUTLINED, icon_color=GOLD),
-                        ft.IconButton(ft.icons.CHAT_OUTLINED, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.FACEBOOK, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.CAMERA_ALT_OUTLINED, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.EMAIL_OUTLINED, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.CHAT_OUTLINED, icon_color=GOLD),
                     ]),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,

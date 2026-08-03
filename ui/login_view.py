@@ -30,10 +30,10 @@ def _footer() -> ft.Container:
                         ),
                         ft.Row(
                             [
-                                ft.IconButton(ft.icons.FACEBOOK, icon_color=GOLD),
-                                ft.IconButton(ft.icons.CAMERA_ALT_OUTLINED, icon_color=GOLD),
-                                ft.IconButton(ft.icons.EMAIL_OUTLINED, icon_color=GOLD),
-                                ft.IconButton(ft.icons.CHAT_OUTLINED, icon_color=GOLD),
+                                ft.IconButton(ft.Icons.FACEBOOK, icon_color=GOLD),
+                                ft.IconButton(ft.Icons.CAMERA_ALT_OUTLINED, icon_color=GOLD),
+                                ft.IconButton(ft.Icons.EMAIL_OUTLINED, icon_color=GOLD),
+                                ft.IconButton(ft.Icons.CHAT_OUTLINED, icon_color=GOLD),
                             ]
                         ),
                     ],
@@ -49,7 +49,7 @@ def login_view(page: ft.Page) -> ft.View:
 
     correo_field = ft.TextField(
         hint_text="ejemplo@gmail.com",
-        prefix_icon=ft.icons.MAIL_OUTLINE,
+        prefix_icon=ft.Icons.MAIL_OUTLINE,
         bgcolor=BG,
         border_color=BORDER,
         color=TEXT,
@@ -58,7 +58,7 @@ def login_view(page: ft.Page) -> ft.View:
 
     password_field = ft.TextField(
         hint_text="••••••••••••",
-        prefix_icon=ft.icons.LOCK_OUTLINE,
+        prefix_icon=ft.Icons.LOCK_OUTLINE,
         password=True,
         can_reveal_password=True,
         bgcolor=BG,
@@ -68,7 +68,7 @@ def login_view(page: ft.Page) -> ft.View:
     )
 
     recordar_check = ft.Checkbox(label="Recordar contraseña", value=False)
-    mensaje = ft.Text("", color=ft.colors.RED_300, size=12)
+    mensaje = ft.Text("", color=ft.Colors.RED_300, size=12)
 
     def iniciar_sesion(e):
         correo = (correo_field.value or "").strip()
@@ -101,7 +101,7 @@ def login_view(page: ft.Page) -> ft.View:
             ft.Container(height=10),
             ft.Row(
                 [
-                    ft.IconButton(ft.icons.MENU, icon_color=GOLD),
+                    ft.IconButton(ft.Icons.MENU, icon_color=GOLD),
                     ft.Column(
                         [
                             ft.Text("R⁘M", size=30, color=BTN_GREEN, weight=ft.FontWeight.BOLD),

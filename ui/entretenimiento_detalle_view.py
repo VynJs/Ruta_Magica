@@ -31,19 +31,19 @@ def _sidebar(page: ft.Page) -> ft.Container:
                 ft.Text("R⁘M", color=BTN_GREEN, size=22, weight=ft.FontWeight.BOLD),
                 ft.Text("Ruta Mágica", color=TEXT, size=12, italic=True),
                 ft.Container(height=15),
-                item(ft.icons.HOME_OUTLINED, "Inicio", "/home"),
-                item(ft.icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
-                item(ft.icons.EVENT_OUTLINED, "Eventos", "/admin/eventos"),
-                item(ft.icons.STOREFRONT_OUTLINED, "Establecimientos", "/admin/establecimientos"),
+                item(ft.Icons.HOME_OUTLINED, "Inicio", "/home"),
+                item(ft.Icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
+                item(ft.Icons.EVENT_OUTLINED, "Eventos", "/admin/eventos"),
+                item(ft.Icons.STOREFRONT_OUTLINED, "Establecimientos", "/admin/establecimientos"),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.CELEBRATION_OUTLINED, color=GOLD, size=18), ft.Text("Entretenimiento", color=GOLD)]),
+                    content=ft.Row([ft.Icon(ft.Icons.CELEBRATION_OUTLINED, color=GOLD, size=18), ft.Text("Entretenimiento", color=GOLD)]),
                     bgcolor=CARD, border_radius=6, padding=ft.padding.symmetric(horizontal=15, vertical=10),
                 ),
                 ft.Container(expand=True),
-                item(ft.icons.SETTINGS_OUTLINED, "Configuración", None),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None),
                 ft.Divider(color=BORDER),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
+                    content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
                     padding=ft.padding.symmetric(horizontal=15, vertical=10), on_click=cerrar_sesion,
                 ),
             ],
@@ -55,7 +55,7 @@ def _sidebar(page: ft.Page) -> ft.Container:
 def _recomendacion(texto) -> ft.Container:
     return ft.Container(
         content=ft.Column(
-            [ft.Icon(ft.icons.HIKING, color=BTN_GREEN), ft.Text(texto or "—", color=TEXT, size=12, text_align=ft.TextAlign.CENTER)],
+            [ft.Icon(ft.Icons.HIKING, color=BTN_GREEN), ft.Text(texto or "—", color=TEXT, size=12, text_align=ft.TextAlign.CENTER)],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=6,
         ),
         bgcolor=CARD, border=ft.border.all(1, BORDER), border_radius=10, padding=12, width=200,
@@ -74,7 +74,7 @@ def entretenimiento_detalle_view(page: ft.Page) -> ft.View:
         ent = None
 
     if ent is None:
-        cuerpo = ft.Text("No se encontró la experiencia seleccionada.", color=ft.colors.RED_300)
+        cuerpo = ft.Text("No se encontró la experiencia seleccionada.", color=ft.Colors.RED_300)
     else:
         banner = ft.Container(
             content=ft.Stack(
@@ -102,9 +102,9 @@ def entretenimiento_detalle_view(page: ft.Page) -> ft.View:
                 [
                     ft.Text("Acerca de esta experiencia", color=TEXT, weight=ft.FontWeight.BOLD, size=16),
                     ft.Text(ent.descripcion_completa or "—", color=MUTED),
-                    ft.Row([ft.Icon(ft.icons.CHECK_CIRCLE_OUTLINE, color=BTN_GREEN, size=16), ft.Text(ent.caracteristica_1 or "—", color=MUTED)]),
-                    ft.Row([ft.Icon(ft.icons.CHECK_CIRCLE_OUTLINE, color=BTN_GREEN, size=16), ft.Text(ent.caracteristica_2 or "—", color=MUTED)]),
-                    ft.Row([ft.Icon(ft.icons.CHECK_CIRCLE_OUTLINE, color=BTN_GREEN, size=16), ft.Text(ent.caracteristica_3 or "—", color=MUTED)]),
+                    ft.Row([ft.Icon(ft.Icons.CHECK_CIRCLE_OUTLINE, color=BTN_GREEN, size=16), ft.Text(ent.caracteristica_1 or "—", color=MUTED)]),
+                    ft.Row([ft.Icon(ft.Icons.CHECK_CIRCLE_OUTLINE, color=BTN_GREEN, size=16), ft.Text(ent.caracteristica_2 or "—", color=MUTED)]),
+                    ft.Row([ft.Icon(ft.Icons.CHECK_CIRCLE_OUTLINE, color=BTN_GREEN, size=16), ft.Text(ent.caracteristica_3 or "—", color=MUTED)]),
                 ],
                 spacing=6,
             ),
@@ -115,11 +115,11 @@ def entretenimiento_detalle_view(page: ft.Page) -> ft.View:
             content=ft.Column(
                 [
                     ft.Text("Información del entretenimiento", color=TEXT, weight=ft.FontWeight.BOLD, size=16),
-                    ft.Row([ft.Icon(ft.icons.LOCATION_ON_OUTLINED, color=GOLD, size=16), ft.Text("Ubicación", color=TEXT), ft.Text(str(ent.direccion), color=MUTED)]),
-                    ft.Row([ft.Icon(ft.icons.ACCESS_TIME, color=GOLD, size=16), ft.Text("Horario", color=TEXT), ft.Text(f"{ent.horario_inicio} - {ent.horario_fin}", color=MUTED)]),
-                    ft.Row([ft.Icon(ft.icons.CATEGORY_OUTLINED, color=GOLD, size=16), ft.Text("Categoría", color=TEXT), ft.Text(str(ent.categoria), color=MUTED)]),
-                    ft.Row([ft.Icon(ft.icons.GROUPS_OUTLINED, color=GOLD, size=16), ft.Text("Capacidad Rec.", color=TEXT), ft.Text(str(ent.capacidad), color=MUTED)]),
-                    ft.ElevatedButton("Ver ruta en Google Maps", icon=ft.icons.MAP_OUTLINED, style=ft.ButtonStyle(bgcolor=CARD, color=TEXT)),
+                    ft.Row([ft.Icon(ft.Icons.LOCATION_ON_OUTLINED, color=GOLD, size=16), ft.Text("Ubicación", color=TEXT), ft.Text(str(ent.direccion), color=MUTED)]),
+                    ft.Row([ft.Icon(ft.Icons.ACCESS_TIME, color=GOLD, size=16), ft.Text("Horario", color=TEXT), ft.Text(f"{ent.horario_inicio} - {ent.horario_fin}", color=MUTED)]),
+                    ft.Row([ft.Icon(ft.Icons.CATEGORY_OUTLINED, color=GOLD, size=16), ft.Text("Categoría", color=TEXT), ft.Text(str(ent.categoria), color=MUTED)]),
+                    ft.Row([ft.Icon(ft.Icons.GROUPS_OUTLINED, color=GOLD, size=16), ft.Text("Capacidad Rec.", color=TEXT), ft.Text(str(ent.capacidad), color=MUTED)]),
+                    ft.ElevatedButton("Ver ruta en Google Maps", icon=ft.Icons.MAP_OUTLINED, style=ft.ButtonStyle(bgcolor=CARD, color=TEXT)),
                 ],
                 spacing=8,
             ),
@@ -131,7 +131,7 @@ def entretenimiento_detalle_view(page: ft.Page) -> ft.View:
                 [
                     ft.Text("Galería de la experiencia", color=TEXT, weight=ft.FontWeight.BOLD, size=16),
                     ft.Row([ft.Container(bgcolor="#DDDDDD", width=140, height=110, border_radius=8) for _ in range(4)], wrap=True, spacing=10),
-                    ft.OutlinedButton("Ver todas las imágenes", icon=ft.icons.IMAGE_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
+                    ft.OutlinedButton("Ver todas las imágenes", icon=ft.Icons.IMAGE_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
                 ],
                 spacing=10,
             ),
@@ -143,7 +143,7 @@ def entretenimiento_detalle_view(page: ft.Page) -> ft.View:
                 [
                     ft.Text("Información adicional", color=TEXT, weight=ft.FontWeight.BOLD, size=16),
                     ft.Text("Servicios:", color=MUTED, size=12),
-                    ft.Row([ft.Icon(ft.icons.CHECK, color=BTN_GREEN, size=16) for _ in range(3)]),
+                    ft.Row([ft.Icon(ft.Icons.CHECK, color=BTN_GREEN, size=16) for _ in range(3)]),
                     ft.Text(f"Precios: {ent.precio or '—'}", color=MUTED, size=12),
                 ],
                 spacing=6,
@@ -177,7 +177,7 @@ def entretenimiento_detalle_view(page: ft.Page) -> ft.View:
 
     encabezado = ft.Column(
         [
-            ft.Row([ft.IconButton(ft.icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/entretenimiento")),
+            ft.Row([ft.IconButton(ft.Icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/entretenimiento")),
                     ft.Text("Gestión de entretenimiento", color=GOLD, size=22, weight=ft.FontWeight.BOLD)]),
             ft.Text("Entretenimiento > ver entretenimiento", color=MUTED, size=12),
         ],

@@ -32,24 +32,24 @@ def _sidebar(page: ft.Page) -> ft.Container:
                 ft.Text("R⁘M", color=BTN_GREEN, size=22, weight=ft.FontWeight.BOLD),
                 ft.Text("Ruta Mágica", color=TEXT, size=12, italic=True),
                 ft.Container(height=15),
-                item(ft.icons.HOME_OUTLINED, "Inicio", "/home"),
-                item(ft.icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
+                item(ft.Icons.HOME_OUTLINED, "Inicio", "/home"),
+                item(ft.Icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.EVENT_OUTLINED, color=GOLD, size=18), ft.Text("Gestión Eventos", color=GOLD)]),
+                    content=ft.Row([ft.Icon(ft.Icons.EVENT_OUTLINED, color=GOLD, size=18), ft.Text("Gestión Eventos", color=GOLD)]),
                     bgcolor=CARD, border_radius=6, padding=ft.padding.symmetric(horizontal=15, vertical=10),
                 ),
-                item(ft.icons.STOREFRONT_OUTLINED, "Gestión Estable.", "/admin/establecimientos"),
-                item(ft.icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento"),
-                item(ft.icons.CATEGORY_OUTLINED, "Gestión Cat.", "/admin/categorias"),
+                item(ft.Icons.STOREFRONT_OUTLINED, "Gestión Estable.", "/admin/establecimientos"),
+                item(ft.Icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento"),
+                item(ft.Icons.CATEGORY_OUTLINED, "Gestión Cat.", "/admin/categorias"),
                 ft.Divider(color=BORDER),
-                item(ft.icons.STOREFRONT, "Establecimientos", "/establecimientos"),
-                item(ft.icons.EVENT, "Eventos", "/eventos"),
-                item(ft.icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
+                item(ft.Icons.STOREFRONT, "Establecimientos", "/establecimientos"),
+                item(ft.Icons.EVENT, "Eventos", "/eventos"),
+                item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.icons.SETTINGS_OUTLINED, "Configuración", None),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None),
                 ft.Divider(color=BORDER),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
+                    content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
                     padding=ft.padding.symmetric(horizontal=15, vertical=10), on_click=cerrar_sesion,
                 ),
             ],
@@ -112,11 +112,11 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     caract3 = ft.TextField(hint_text="Característica de tu evento...", bgcolor=BG, border_color=BORDER, color=TEXT,
                             value=getattr(ex, "caracteristica_3", ""))
 
-    instagram_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.icons.CAMERA_ALT_OUTLINED,
+    instagram_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.Icons.CAMERA_ALT_OUTLINED,
                                     bgcolor=BG, border_color=BORDER, color=TEXT, value=getattr(ex, "instagram", ""))
-    facebook_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.icons.FACEBOOK,
+    facebook_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.Icons.FACEBOOK,
                                    bgcolor=BG, border_color=BORDER, color=TEXT, value=getattr(ex, "facebook", ""))
-    web_field = ft.TextField(hint_text="https://sitio.web.com", prefix_icon=ft.icons.LANGUAGE,
+    web_field = ft.TextField(hint_text="https://sitio.web.com", prefix_icon=ft.Icons.LANGUAGE,
                               bgcolor=BG, border_color=BORDER, color=TEXT, value=getattr(ex, "pagina_web", ""))
 
     estado_field = ft.Dropdown(bgcolor=BG, border_color=BORDER, color=TEXT,
@@ -124,7 +124,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                                          ft.dropdown.Option("Aprobado"), ft.dropdown.Option("Rechazado")],
                                 value=str(getattr(ex, "estado", "Activo")) or "Activo")
 
-    mensaje = ft.Text("", color=ft.colors.RED_300)
+    mensaje = ft.Text("", color=ft.Colors.RED_300)
 
     def guardar(e):
         if not nombre_field.value or not categoria_field.value or not ubicacion_field.value:
@@ -159,7 +159,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     info_evento = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.EVENT_OUTLINED, color=TEXT), ft.Text("Información del evento", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.EVENT_OUTLINED, color=TEXT), ft.Text("Información del evento", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([col_nombre, ft.Column([ft.Text("Categoría *", color=TEXT, size=12), categoria_field], spacing=3)]),
                 ft.Row([
                     ft.Column([ft.Text("Horario del evento *", color=TEXT, size=12),
@@ -167,7 +167,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                     ft.Column([ft.Text("Fecha *", color=TEXT, size=12), fecha_field], spacing=3),
                 ]),
                 col_ubicacion,
-                ft.OutlinedButton("Seleccionar en mapa", icon=ft.icons.MAP_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
+                ft.OutlinedButton("Seleccionar en mapa", icon=ft.Icons.MAP_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
             ],
             spacing=8,
         ),
@@ -177,7 +177,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     info_organizador = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.PERSON_OUTLINE, color=TEXT), ft.Text("Información del organizador", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.PERSON_OUTLINE, color=TEXT), ft.Text("Información del organizador", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([col_organizador, ft.Column([ft.Text("Edad *", color=TEXT, size=12), edad_field], spacing=3, width=100)]),
                 ft.Row([ft.Column([ft.Text("Teléfono *", color=TEXT, size=12), telefono_field], spacing=3, expand=True),
                         ft.Column([ft.Text("Correo eléctronico *", color=TEXT, size=12), correo_field], spacing=3, expand=True)]),
@@ -190,7 +190,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     descripcion = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Descripción del evento", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Descripción del evento", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([col_desc_corta, col_desc_completa]),
                 ft.Text("Características del evento *", color=TEXT, size=12),
                 caract1, caract2, caract3,
@@ -203,16 +203,16 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     redes = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.EDIT_OUTLINED, color=TEXT), ft.Text("Redes Sociales", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.EDIT_OUTLINED, color=TEXT), ft.Text("Redes Sociales", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([instagram_field, facebook_field]),
                 web_field,
                 ft.Divider(color=BORDER),
                 ft.Text("Documentos requeridos", color=TEXT, weight=ft.FontWeight.BOLD),
                 ft.Row([
                     ft.Column([ft.Text("Permiso de evento *\nPDF, JPG o PNG (Máx. 5mb)", color=MUTED, size=11),
-                               ft.OutlinedButton("Subir archivo", icon=ft.icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
+                               ft.OutlinedButton("Subir archivo", icon=ft.Icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
                     ft.Column([ft.Text("Identificación oficial del organizador *\nPDF, JPG o PNG (Máx. 5mb)", color=MUTED, size=11),
-                               ft.OutlinedButton("Subir archivo", icon=ft.icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
+                               ft.OutlinedButton("Subir archivo", icon=ft.Icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
                 ]),
             ],
             spacing=8,
@@ -223,7 +223,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     adicional = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.INFO_OUTLINE, color=TEXT), ft.Text("Información del adicional", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.INFO_OUTLINE, color=TEXT), ft.Text("Información del adicional", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Text("Estado *", color=TEXT, size=12), estado_field,
                 ft.Text("Datos destacados del evento *", color=TEXT, size=12),
                 ft.Row([
@@ -242,10 +242,10 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     imagen_box = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.CAMERA_ALT_OUTLINED, color=TEXT), ft.Text("Imagen del evento", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.CAMERA_ALT_OUTLINED, color=TEXT), ft.Text("Imagen del evento", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Container(
                     content=ft.Column(
-                        [ft.Icon(ft.icons.CLOUD_UPLOAD_OUTLINED, size=35, color=TEXT),
+                        [ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=35, color=TEXT),
                          ft.Text("Subir imagen principal", color=TEXT, size=12),
                          ft.Text("JPG, PNG o WEB (máx. 5MB)", color=MUTED, size=10),
                          ft.ElevatedButton("Seleccionar archivo", style=ft.ButtonStyle(bgcolor=GOLD, color=BG))],
@@ -264,7 +264,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     resumen_box = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Resumen de la información", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Resumen de la información", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Text("Nombre del evento:", color=TEXT, size=12),
                 ft.Text("Categoría:", color=TEXT, size=12),
                 ft.Text("Fecha:", color=TEXT, size=12),
@@ -281,7 +281,7 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
 
     encabezado = ft.Column(
         [
-            ft.Row([ft.IconButton(ft.icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/eventos")),
+            ft.Row([ft.IconButton(ft.Icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/eventos")),
                     ft.Text("Gestión de Evento", color=GOLD, size=22, weight=ft.FontWeight.BOLD)]),
             ft.Text(f"Eventos > {'Agregar evento' if modo == 'agregar' else 'Editar evento'}", color=MUTED, size=12),
         ],

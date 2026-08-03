@@ -32,24 +32,24 @@ def _sidebar(page: ft.Page) -> ft.Container:
                 ft.Text("R⁘M", color=BTN_GREEN, size=22, weight=ft.FontWeight.BOLD),
                 ft.Text("Ruta Mágica", color=TEXT, size=12, italic=True),
                 ft.Container(height=15),
-                item(ft.icons.HOME_OUTLINED, "Inicio", "/home"),
-                item(ft.icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
-                item(ft.icons.EVENT_OUTLINED, "Gestión Eventos", "/admin/eventos"),
-                item(ft.icons.STOREFRONT_OUTLINED, "Gestión Estable.", "/admin/establecimientos"),
-                item(ft.icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento"),
+                item(ft.Icons.HOME_OUTLINED, "Inicio", "/home"),
+                item(ft.Icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
+                item(ft.Icons.EVENT_OUTLINED, "Gestión Eventos", "/admin/eventos"),
+                item(ft.Icons.STOREFRONT_OUTLINED, "Gestión Estable.", "/admin/establecimientos"),
+                item(ft.Icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento"),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.CATEGORY_OUTLINED, color=GOLD, size=18), ft.Text("Gestión Cat.", color=GOLD)]),
+                    content=ft.Row([ft.Icon(ft.Icons.CATEGORY_OUTLINED, color=GOLD, size=18), ft.Text("Gestión Cat.", color=GOLD)]),
                     bgcolor=CARD, border_radius=6, padding=ft.padding.symmetric(horizontal=15, vertical=10),
                 ),
                 ft.Divider(color=BORDER),
-                item(ft.icons.STOREFRONT, "Establecimientos", "/establecimientos"),
-                item(ft.icons.EVENT, "Eventos", "/eventos"),
-                item(ft.icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
+                item(ft.Icons.STOREFRONT, "Establecimientos", "/establecimientos"),
+                item(ft.Icons.EVENT, "Eventos", "/eventos"),
+                item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.icons.SETTINGS_OUTLINED, "Configuración", None),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None),
                 ft.Divider(color=BORDER),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
+                    content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
                     padding=ft.padding.symmetric(horizontal=15, vertical=10),
                     on_click=cerrar_sesion,
                 ),
@@ -99,7 +99,7 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         value=str(categoria_existente.estado) if categoria_existente else "Activo",
     )
 
-    mensaje = ft.Text("", color=ft.colors.RED_300)
+    mensaje = ft.Text("", color=ft.Colors.RED_300)
 
     resumen_nombre = ft.Text("—", color=MUTED)
     resumen_tipo = ft.Text("—", color=MUTED)
@@ -138,7 +138,7 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     encabezado = ft.Column(
         [
             ft.Row([
-                ft.IconButton(ft.icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/categorias")),
+                ft.IconButton(ft.Icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/categorias")),
                 ft.Text("Gestión de Categoría", color=GOLD, size=22, weight=ft.FontWeight.BOLD),
             ]),
             ft.Text(f"Categoría > {'Agregar categoría' if modo == 'agregar' else 'Editar categoría'}", color=MUTED, size=12),
@@ -149,7 +149,7 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     form_info = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.CATEGORY_OUTLINED, color=TEXT), ft.Text("Información categoría", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.CATEGORY_OUTLINED, color=TEXT), ft.Text("Información categoría", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Text("Nombre categoria *", color=TEXT), nombre_field,
                 ft.Text("Tipo categoria *", color=TEXT), tipo_field,
                 ft.Text("Descripción *", color=TEXT), descripcion_field,
@@ -164,7 +164,7 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     imagen_box = ft.Container(
         content=ft.Column(
             [
-                ft.Icon(ft.icons.CLOUD_UPLOAD_OUTLINED, size=40, color=TEXT),
+                ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=40, color=TEXT),
                 ft.Text("Subir imagen principal", color=TEXT),
                 ft.Text("JPG, PNG (máx. 2MB)", color=MUTED, size=11),
                 ft.ElevatedButton("Seleccionar archivo", style=ft.ButtonStyle(bgcolor=GOLD, color=BG)),
@@ -178,7 +178,7 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     resumen_box = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Resumen de la categoría", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Resumen de la categoría", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([ft.Text("Nombre Categoría:", color=TEXT), resumen_nombre]),
                 ft.Row([ft.Text("Tipo categoría:", color=TEXT), resumen_tipo]),
                 ft.Row([ft.Text("Descripción:", color=TEXT), resumen_desc]),

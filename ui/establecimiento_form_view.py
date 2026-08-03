@@ -32,24 +32,24 @@ def _sidebar(page: ft.Page) -> ft.Container:
                 ft.Text("R⁘M", color=BTN_GREEN, size=22, weight=ft.FontWeight.BOLD),
                 ft.Text("Ruta Mágica", color=TEXT, size=12, italic=True),
                 ft.Container(height=15),
-                item(ft.icons.HOME_OUTLINED, "Inicio", "/home"),
-                item(ft.icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
-                item(ft.icons.EVENT_OUTLINED, "Gestión Eventos", "/admin/eventos"),
+                item(ft.Icons.HOME_OUTLINED, "Inicio", "/home"),
+                item(ft.Icons.BAR_CHART_OUTLINED, "Reportes", "/admin/reportes"),
+                item(ft.Icons.EVENT_OUTLINED, "Gestión Eventos", "/admin/eventos"),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.STOREFRONT_OUTLINED, color=GOLD, size=18), ft.Text("Gestión Estable.", color=GOLD)]),
+                    content=ft.Row([ft.Icon(ft.Icons.STOREFRONT_OUTLINED, color=GOLD, size=18), ft.Text("Gestión Estable.", color=GOLD)]),
                     bgcolor=CARD, border_radius=6, padding=ft.padding.symmetric(horizontal=15, vertical=10),
                 ),
-                item(ft.icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento"),
-                item(ft.icons.CATEGORY_OUTLINED, "Gestión Cat.", "/admin/categorias"),
+                item(ft.Icons.CELEBRATION_OUTLINED, "Gestión Entre.", "/admin/entretenimiento"),
+                item(ft.Icons.CATEGORY_OUTLINED, "Gestión Cat.", "/admin/categorias"),
                 ft.Divider(color=BORDER),
-                item(ft.icons.STOREFRONT, "Establecimientos", "/establecimientos"),
-                item(ft.icons.EVENT, "Eventos", "/eventos"),
-                item(ft.icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
+                item(ft.Icons.STOREFRONT, "Establecimientos", "/establecimientos"),
+                item(ft.Icons.EVENT, "Eventos", "/eventos"),
+                item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.icons.SETTINGS_OUTLINED, "Configuración", None),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None),
                 ft.Divider(color=BORDER),
                 ft.Container(
-                    content=ft.Row([ft.Icon(ft.icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
+                    content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
                     padding=ft.padding.symmetric(horizontal=15, vertical=10), on_click=cerrar_sesion,
                 ),
             ],
@@ -63,7 +63,7 @@ def _producto_box(idx) -> ft.Container:
         content=ft.Column(
             [
                 ft.Container(bgcolor="#DDDDDD", height=50, alignment=ft.alignment.center,
-                             content=ft.Icon(ft.icons.IMAGE_OUTLINED, color="#666")),
+                             content=ft.Icon(ft.Icons.IMAGE_OUTLINED, color="#666")),
                 ft.TextField(hint_text="Nombre producto", bgcolor=BG, border_color=BORDER, color=TEXT, text_size=11),
                 ft.TextField(hint_text="Escribe una descripción muy corta...", bgcolor=BG, border_color=BORDER,
                              color=TEXT, text_size=10),
@@ -121,11 +121,11 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     caract3 = ft.TextField(hint_text="Característica de el establecimiento...", bgcolor=BG, border_color=BORDER, color=TEXT,
                             value=getattr(ex, "caracteristica_3", ""))
 
-    instagram_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.icons.CAMERA_ALT_OUTLINED,
+    instagram_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.Icons.CAMERA_ALT_OUTLINED,
                                     bgcolor=BG, border_color=BORDER, color=TEXT, value=getattr(ex, "instagram", ""))
-    facebook_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.icons.FACEBOOK,
+    facebook_field = ft.TextField(hint_text="@usuario", prefix_icon=ft.Icons.FACEBOOK,
                                    bgcolor=BG, border_color=BORDER, color=TEXT, value=getattr(ex, "facebook", ""))
-    web_field = ft.TextField(hint_text="https://sitio.web.com", prefix_icon=ft.icons.LANGUAGE,
+    web_field = ft.TextField(hint_text="https://sitio.web.com", prefix_icon=ft.Icons.LANGUAGE,
                               bgcolor=BG, border_color=BORDER, color=TEXT, value=getattr(ex, "pagina_web", ""))
 
     estado_field = ft.Dropdown(bgcolor=BG, border_color=BORDER, color=TEXT,
@@ -137,7 +137,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     rango_field = ft.TextField(hint_text="$200 - $400", bgcolor=BG, border_color=BORDER, color=TEXT,
                                 value=getattr(ex, "rango_precios", ""))
 
-    mensaje = ft.Text("", color=ft.colors.RED_300)
+    mensaje = ft.Text("", color=ft.Colors.RED_300)
 
     def guardar(e):
         if not nombre_field.value or not categoria_field.value or not direccion_field.value:
@@ -172,7 +172,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     info_establecimiento = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.STOREFRONT_OUTLINED, color=TEXT), ft.Text("Información del establecimiento", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.STOREFRONT_OUTLINED, color=TEXT), ft.Text("Información del establecimiento", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([
                     ft.Column([ft.Text("Nombre del establecimiento*", color=TEXT, size=12), nombre_field], expand=True, spacing=3),
                     ft.Column([ft.Text("Categoría *", color=TEXT, size=12), categoria_field], expand=True, spacing=3),
@@ -182,7 +182,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                                ft.Row([hora_inicio_field, ft.Text("-", color=TEXT), hora_fin_field])], expand=True, spacing=3),
                 ]),
                 ft.Column([ft.Text("Dirección*", color=TEXT, size=12), direccion_field], spacing=3),
-                ft.OutlinedButton("Seleccionar en mapa", icon=ft.icons.MAP_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
+                ft.OutlinedButton("Seleccionar en mapa", icon=ft.Icons.MAP_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
             ],
             spacing=8,
         ),
@@ -192,7 +192,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     info_propietario = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.PERSON_OUTLINE, color=TEXT), ft.Text("Información del propietario", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.PERSON_OUTLINE, color=TEXT), ft.Text("Información del propietario", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([
                     ft.Column([ft.Text("Nombre del propietario *", color=TEXT, size=12), propietario_field], expand=True, spacing=3),
                     ft.Column([ft.Text("Edad *", color=TEXT, size=12), edad_field], width=100, spacing=3),
@@ -210,7 +210,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     descripcion = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Descripción del establecimiento", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Descripción del establecimiento", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([
                     ft.Column([ft.Text("Descripción corta *", color=TEXT, size=12), desc_corta_field], expand=True, spacing=3),
                     ft.Column([ft.Text("Descripción completa *", color=TEXT, size=12), desc_completa_field], expand=True, spacing=3),
@@ -226,16 +226,16 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     redes = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.EDIT_OUTLINED, color=TEXT), ft.Text("Redes Sociales", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.EDIT_OUTLINED, color=TEXT), ft.Text("Redes Sociales", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Row([instagram_field, facebook_field]),
                 web_field,
                 ft.Divider(color=BORDER),
                 ft.Text("Documentos requeridos", color=TEXT, weight=ft.FontWeight.BOLD),
                 ft.Row([
                     ft.Column([ft.Text("Documentos del establecimiento *\nPDF, JPG o PNG (Máx. 5mb)", color=MUTED, size=11),
-                               ft.OutlinedButton("Subir archivo", icon=ft.icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
+                               ft.OutlinedButton("Subir archivo", icon=ft.Icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
                     ft.Column([ft.Text("Identificación oficial del propietario*\nPDF, JPG o PNG (Máx. 5mb)", color=MUTED, size=11),
-                               ft.OutlinedButton("Subir archivo", icon=ft.icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
+                               ft.OutlinedButton("Subir archivo", icon=ft.Icons.UPLOAD_FILE, style=ft.ButtonStyle(color=TEXT))]),
                 ]),
             ],
             spacing=8,
@@ -246,7 +246,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     adicional = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.INFO_OUTLINE, color=TEXT), ft.Text("Información del adicional", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.INFO_OUTLINE, color=TEXT), ft.Text("Información del adicional", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Text("Estado *", color=TEXT, size=12), estado_field,
                 ft.Row([
                     ft.Column([ft.Text("Servicios que ofrece *", color=TEXT, size=12), servicios_field], expand=True, spacing=3),
@@ -263,10 +263,10 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     imagen_box = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.CAMERA_ALT_OUTLINED, color=TEXT), ft.Text("Imagen del establecimiento", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.CAMERA_ALT_OUTLINED, color=TEXT), ft.Text("Imagen del establecimiento", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Container(
                     content=ft.Column(
-                        [ft.Icon(ft.icons.CLOUD_UPLOAD_OUTLINED, size=35, color=TEXT),
+                        [ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=35, color=TEXT),
                          ft.Text("Subir imagen principal", color=TEXT, size=12),
                          ft.Text("JPG, PNG o WEB (máx. 5MB)", color=MUTED, size=10),
                          ft.ElevatedButton("Seleccionar archivo", style=ft.ButtonStyle(bgcolor=GOLD, color=BG))],
@@ -285,7 +285,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     resumen_box = ft.Container(
         content=ft.Column(
             [
-                ft.Row([ft.Icon(ft.icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Resumen de la información", color=TEXT, weight=ft.FontWeight.BOLD)]),
+                ft.Row([ft.Icon(ft.Icons.DESCRIPTION_OUTLINED, color=TEXT), ft.Text("Resumen de la información", color=TEXT, weight=ft.FontWeight.BOLD)]),
                 ft.Text("Nombre del establecimiento:", color=TEXT, size=12),
                 ft.Text("Categoría:", color=TEXT, size=12),
                 ft.Text("Horario de atención:", color=TEXT, size=12),
@@ -302,7 +302,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
 
     encabezado = ft.Column(
         [
-            ft.Row([ft.IconButton(ft.icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/establecimientos")),
+            ft.Row([ft.IconButton(ft.Icons.ARROW_BACK, icon_color=GOLD, on_click=lambda e: page.go("/admin/establecimientos")),
                     ft.Text("Gestión de Establecimientos", color=GOLD, size=22, weight=ft.FontWeight.BOLD)]),
             ft.Text(f"Eventos > {'Agregar establecimiento' if modo == 'agregar' else 'Editar establecimiento'}", color=MUTED, size=12),
         ],

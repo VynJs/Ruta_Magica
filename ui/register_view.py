@@ -14,19 +14,19 @@ MUTED = "#AFC2B3"
 
 def register_view(page: ft.Page) -> ft.View:
 
-    nombre_field = ft.TextField(hint_text="Ej. José Luis", prefix_icon=ft.icons.PERSON_OUTLINE,
+    nombre_field = ft.TextField(hint_text="Ej. José Luis", prefix_icon=ft.Icons.PERSON_OUTLINE,
                                  bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8)
-    apellido_p_field = ft.TextField(hint_text="Ej. Ortiz", prefix_icon=ft.icons.PERSON_OUTLINE,
+    apellido_p_field = ft.TextField(hint_text="Ej. Ortiz", prefix_icon=ft.Icons.PERSON_OUTLINE,
                                      bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8)
-    apellido_m_field = ft.TextField(hint_text="Ej. Montaño", prefix_icon=ft.icons.PERSON_OUTLINE,
+    apellido_m_field = ft.TextField(hint_text="Ej. Montaño", prefix_icon=ft.Icons.PERSON_OUTLINE,
                                      bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8)
-    correo_field = ft.TextField(hint_text="ejemplo@gmail.com", prefix_icon=ft.icons.MAIL_OUTLINE,
+    correo_field = ft.TextField(hint_text="ejemplo@gmail.com", prefix_icon=ft.Icons.MAIL_OUTLINE,
                                  bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8)
-    password_field = ft.TextField(hint_text="••••••••••••", prefix_icon=ft.icons.LOCK_OUTLINE,
+    password_field = ft.TextField(hint_text="••••••••••••", prefix_icon=ft.Icons.LOCK_OUTLINE,
                                    password=True, can_reveal_password=True,
                                    bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8)
 
-    mensaje = ft.Text("", color=ft.colors.RED_300, size=12)
+    mensaje = ft.Text("", color=ft.Colors.RED_300, size=12)
 
     def registrarme(e):
         nombre = (nombre_field.value or "").strip()
@@ -64,7 +64,7 @@ def register_view(page: ft.Page) -> ft.View:
             ft.Container(height=10),
             ft.Row(
                 [
-                    ft.IconButton(ft.icons.MENU, icon_color=GOLD),
+                    ft.IconButton(ft.Icons.MENU, icon_color=GOLD),
                     ft.Column(
                         [
                             ft.Text("R⁘M", size=26, color=BTN_GREEN, weight=ft.FontWeight.BOLD),

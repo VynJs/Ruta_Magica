@@ -825,7 +825,7 @@ def menu_eventos():
 
 #==========================================================================================
 if __name__ == "__main__":
-    ft.app(target=main_window)
+  ft.app(target=main_window)
 
 
 # def main():

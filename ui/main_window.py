@@ -125,6 +125,3 @@ def main_window(page: ft.Page):
     page.on_view_pop = view_pop
 
     page.go(page.route if page.route else "/login")
-
-if __name__ == "__main__":
-  ft.app(target=main_window)

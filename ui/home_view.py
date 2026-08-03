@@ -14,7 +14,7 @@ def _tarjeta_categoria(icono: str, titulo: str, on_click) -> ft.Container:
         content=ft.Column(
             [
                 ft.Container(
-                    content=ft.Icon(ft.icons.IMAGE_OUTLINED, size=50, color="#666"),
+                    content=ft.Icon(ft.Icons.IMAGE_OUTLINED, size=50, color="#666"),
                     bgcolor="#DDDDDD",
                     height=180,
                     alignment=ft.alignment.center,
@@ -23,7 +23,7 @@ def _tarjeta_categoria(icono: str, titulo: str, on_click) -> ft.Container:
                     content=ft.Row(
                         [
                             ft.Row([ft.Icon(icono, color=TEXT), ft.Text(titulo, color=TEXT, size=16)]),
-                            ft.Icon(ft.icons.CHEVRON_RIGHT, color=GOLD),
+                            ft.Icon(ft.Icons.CHEVRON_RIGHT, color=GOLD),
                         ],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     ),
@@ -52,15 +52,15 @@ def home_view(page: ft.Page) -> ft.View:
     drawer = ft.NavigationDrawer(
         controls=[
             ft.Container(height=10),
-            ft.NavigationDrawerDestination(icon=ft.icons.HOME_OUTLINED, label="Inicio"),
-            ft.NavigationDrawerDestination(icon=ft.icons.HELP_OUTLINE, label="Sobre Huamantla"),
-            ft.NavigationDrawerDestination(icon=ft.icons.STOREFRONT_OUTLINED, label="Establecimientos"),
-            ft.NavigationDrawerDestination(icon=ft.icons.CELEBRATION_OUTLINED, label="Entretenimiento"),
-            ft.NavigationDrawerDestination(icon=ft.icons.EVENT_OUTLINED, label="Eventos"),
-            ft.NavigationDrawerDestination(icon=ft.icons.ADD_CIRCLE_OUTLINE, label="Agregar"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.HOME_OUTLINED, label="Inicio"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.HELP_OUTLINE, label="Sobre Huamantla"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.STOREFRONT_OUTLINED, label="Establecimientos"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.CELEBRATION_OUTLINED, label="Entretenimiento"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.EVENT_OUTLINED, label="Eventos"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.ADD_CIRCLE_OUTLINE, label="Agregar"),
             ft.Divider(),
-            ft.NavigationDrawerDestination(icon=ft.icons.SETTINGS_OUTLINED, label="Configuración"),
-            ft.NavigationDrawerDestination(icon=ft.icons.LOGOUT, label="Cerrar sesión"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.SETTINGS_OUTLINED, label="Configuración"),
+            ft.NavigationDrawerDestination(icon=ft.Icons.LOGOUT, label="Cerrar sesión"),
         ],
         bgcolor=CARD,
     )
@@ -84,7 +84,7 @@ def home_view(page: ft.Page) -> ft.View:
 
     encabezado = ft.Row(
         [
-            ft.IconButton(ft.icons.MENU, icon_color=GOLD, on_click=abrir_menu),
+            ft.IconButton(ft.Icons.MENU, icon_color=GOLD, on_click=abrir_menu),
             ft.Column(
                 [
                     ft.Text("R⁘M", size=26, color=BTN_GREEN, weight=ft.FontWeight.BOLD),
@@ -94,9 +94,9 @@ def home_view(page: ft.Page) -> ft.View:
             ),
             ft.Row(
                 [
-                    ft.Column([ft.Icon(ft.icons.FAVORITE_BORDER, color=GOLD), ft.Text("Favoritos", color=TEXT, size=11)],
+                    ft.Column([ft.Icon(ft.Icons.FAVORITE_BORDER, color=GOLD), ft.Text("Favoritos", color=TEXT, size=11)],
                               horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    ft.Column([ft.Icon(ft.icons.ACCOUNT_CIRCLE_OUTLINED, color=GOLD), ft.Text(nombre_usuario, color=TEXT, size=11)],
+                    ft.Column([ft.Icon(ft.Icons.ACCOUNT_CIRCLE_OUTLINED, color=GOLD), ft.Text(nombre_usuario, color=TEXT, size=11)],
                               horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                 ],
                 spacing=15,
@@ -132,9 +132,9 @@ def home_view(page: ft.Page) -> ft.View:
 
     tarjetas = ft.Row(
         [
-            _tarjeta_categoria(ft.icons.STOREFRONT_OUTLINED, "Establecimientos", lambda e: page.go("/establecimientos")),
-            _tarjeta_categoria(ft.icons.CELEBRATION_OUTLINED, "Entretenimiento", lambda e: page.go("/entretenimiento")),
-            _tarjeta_categoria(ft.icons.EVENT_OUTLINED, "Eventos", lambda e: page.go("/eventos")),
+            _tarjeta_categoria(ft.Icons.STOREFRONT_OUTLINED, "Establecimientos", lambda e: page.go("/establecimientos")),
+            _tarjeta_categoria(ft.Icons.CELEBRATION_OUTLINED, "Entretenimiento", lambda e: page.go("/entretenimiento")),
+            _tarjeta_categoria(ft.Icons.EVENT_OUTLINED, "Eventos", lambda e: page.go("/eventos")),
         ],
         alignment=ft.MainAxisAlignment.SPACE_EVENLY,
         wrap=True,
@@ -153,10 +153,10 @@ def home_view(page: ft.Page) -> ft.View:
                         ft.TextButton("Contáctanos", style=ft.ButtonStyle(color=MUTED)),
                     ]),
                     ft.Row([
-                        ft.IconButton(ft.icons.FACEBOOK, icon_color=GOLD),
-                        ft.IconButton(ft.icons.CAMERA_ALT_OUTLINED, icon_color=GOLD),
-                        ft.IconButton(ft.icons.EMAIL_OUTLINED, icon_color=GOLD),
-                        ft.IconButton(ft.icons.CHAT_OUTLINED, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.FACEBOOK, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.CAMERA_ALT_OUTLINED, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.EMAIL_OUTLINED, icon_color=GOLD),
+                        ft.IconButton(ft.Icons.CHAT_OUTLINED, icon_color=GOLD),
                     ]),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
