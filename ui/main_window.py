@@ -4,6 +4,11 @@ from ui.login_view import login_view
 from ui.register_view import register_view
 from ui.home_view import home_view
 from ui.establecimientos_view import establecimientos_view
+from ui.eventos_view import eventos_view
+from ui.entretenimiento_view import entretenimiento_view
+from ui.establecimiento_ver_view import establecimiento_ver_view
+from ui.evento_ver_view import evento_ver_view
+from ui.entretenimiento_ver_view import entretenimiento_ver_view
 from ui.admin_reportes_view import admin_reportes_view
 from ui.admin_categorias_view import admin_categorias_view
 from ui.categoria_form_view import categoria_form_view
@@ -56,6 +61,21 @@ def main_window(page: ft.Page):
 
         elif page.route == "/establecimientos":
             page.views.append(establecimientos_view(page))
+
+        elif page.route == "/eventos":
+            page.views.append(eventos_view(page))
+
+        elif page.route == "/entretenimiento":
+            page.views.append(entretenimiento_view(page))
+
+        elif page.route == "/establecimiento/ver":
+            page.views.append(establecimiento_ver_view(page))
+
+        elif page.route == "/evento/ver":
+            page.views.append(evento_ver_view(page))
+
+        elif page.route == "/entretenimiento/ver":
+            page.views.append(entretenimiento_ver_view(page))
 
         elif page.route == "/admin/reportes":
             page.views.append(admin_reportes_view(page))

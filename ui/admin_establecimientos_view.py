@@ -189,6 +189,8 @@ def admin_establecimientos_view(page: ft.Page) -> ft.View:
             _tarjeta_stat(ft.Icons.CHECK_CIRCLE_OUTLINE, "Aprobados", contador["aprobados"], "Activos y visibles", BTN_GREEN),
             _tarjeta_stat(ft.Icons.AUTORENEW, "En revisión", contador["revision"], "Pendientes de aprobación", GOLD),
             _tarjeta_stat(ft.Icons.CANCEL_OUTLINED, "Rechazados", contador["rechazados"], "No cumplieron requisitos", ROJO),
+            ft.ElevatedButton("+ Agregar", style=ft.ButtonStyle(bgcolor=GOLD, color=BG, shape=ft.RoundedRectangleBorder(radius=8)),
+                              on_click=lambda e: page.go("/admin/establecimientos/agregar"), height=55),
         ],
         wrap=True, spacing=12,
     )

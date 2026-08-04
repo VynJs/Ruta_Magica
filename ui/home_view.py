@@ -70,15 +70,22 @@ def home_view(page: ft.Page) -> ft.View:
 
     def on_select_drawer(e):
         idx = e.control.selected_index
-        rutas = {
-            2: "/establecimientos",
-            3: "/entretenimiento",
-            4: "/eventos",
-        }
-        if idx == 8:
+        # Índices reales de cada NavigationDrawerDestination (los Divider/Container
+        # no cuentan): 0 Inicio, 1 Sobre Huamantla, 2 Establecimientos,
+        # 3 Entretenimiento, 4 Eventos, 5 Agregar, 6 Configuración, 7 Cerrar sesión
+        if idx == 0:
+            page.go("/home")
+        elif idx == 2:
+            page.go("/establecimientos")
+        elif idx == 3:
+            page.go("/entretenimiento")
+        elif idx == 4:
+            page.go("/eventos")
+        elif idx == 5:
+            page.go("/admin/reportes")
+        elif idx == 7:
             cerrar_sesion(e)
-        elif idx in rutas:
-            page.go(rutas[idx])
+        # idx 1 (Sobre Huamantla) y 6 (Configuración): sin ruta todavía, a propósito
 
     drawer.on_change = on_select_drawer
 

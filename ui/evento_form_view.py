@@ -1,6 +1,7 @@
 import flet as ft
 
 from dao.evento_dao import EventoDAO
+from dao.categoria_dao import CategoriaDAO
 from models.evento import Evento
 
 BG = "#173029"
@@ -78,9 +79,17 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     ex = evento_existente
 
     col_nombre, nombre_field = _campo("Nombre del evento*", "Ej. Huamantlada", value=getattr(ex, "nombre_evento", ""))
+    try:
+        categorias_registradas = CategoriaDAO().obtener_todo()
+    except Exception:
+        categorias_registradas = []
+    opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas
+                          if str(getattr(c, "tipo_categoria", "")).strip().lower() in ("eventos", "evento")]
+    if not opciones_categoria:
+        opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas]
+
     categoria_field = ft.Dropdown(hint_text="Selecciona una categoria", bgcolor=BG, border_color=BORDER, color=TEXT,
-                                   options=[ft.dropdown.Option("Tradicional"), ft.dropdown.Option("Música"),
-                                            ft.dropdown.Option("Arte"), ft.dropdown.Option("Cultural")],
+                                   options=opciones_categoria,
                                    value=str(getattr(ex, "categoria", "")) or None)
     fecha_field = ft.TextField(hint_text="10/08/2026", bgcolor=BG, border_color=BORDER, color=TEXT,
                                 value=str(getattr(ex, "fecha", "")))

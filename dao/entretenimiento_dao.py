@@ -43,12 +43,10 @@ class EntretenimientoDAO:
                 recomendacion_3= registro[25],
                 instagram= registro[26],
                 facebook= registro[27],
-                pagina_web= registro[28]
+                pagina_web= registro[28],
             )
+            entretenimientos.append(entretenimiento)
 
-            
-
-        entretenimientos.append(entretenimiento)
         cursor.close()
         conexion.close()
         return entretenimientos
@@ -210,7 +208,7 @@ class EntretenimientoDAO:
                 recomendacion_3= registro[25],
                 instagram= registro[26],
                 facebook= registro[27],
-                pagina_web= registro[28]
+                pagina_web= registro[28],
             )
             entretenimientos.append(entretenimiento)
 
@@ -222,7 +220,7 @@ class EntretenimientoDAO:
     def obtener_ultimo_id(self):
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
-        
+
         cursor.execute("SELECT MAX(id) FROM entretenimiento;")
         resultado = cursor.fetchone()
 
