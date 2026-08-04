@@ -1,6 +1,6 @@
 import flet as ft
 
-from dao.establecimiento_dao import EstablecimientoDAO
+from dao.entretenimiento_dao import EntretenimientoDAO
 
 BG = "#173029"
 CARD = "#28453A"
@@ -11,7 +11,7 @@ TEXT = "#ECECE3"
 MUTED = "#AFC2B3"
 
 
-def _tarjeta(nombre: str, estrellas: int = 5, on_click=None) -> ft.Container:
+def _tarjeta(nombre: str, on_click=None) -> ft.Container:
     return ft.Container(
         content=ft.Column(
             [
@@ -24,13 +24,7 @@ def _tarjeta(nombre: str, estrellas: int = 5, on_click=None) -> ft.Container:
                 ft.Container(
                     content=ft.Row(
                         [
-                            ft.Column(
-                                [
-                                    ft.Text(nombre, color=TEXT, size=14),
-                                    ft.Text("★" * estrellas, color=GOLD, size=12),
-                                ],
-                                spacing=2,
-                            ),
+                            ft.Text(nombre, color=TEXT, size=14),
                             ft.Icon(ft.Icons.CHEVRON_RIGHT, color=GOLD),
                         ],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -49,10 +43,10 @@ def _tarjeta(nombre: str, estrellas: int = 5, on_click=None) -> ft.Container:
     )
 
 
-def establecimientos_view(page: ft.Page) -> ft.View:
+def entretenimiento_view(page: ft.Page) -> ft.View:
 
     buscador = ft.TextField(
-        hint_text="Buscar establecimiento...",
+        hint_text="Buscar entretenimiento...",
         prefix_icon=ft.Icons.SEARCH,
         bgcolor=BG, border_color=BORDER, color=TEXT, border_radius=8,
         width=300,
@@ -66,41 +60,40 @@ def establecimientos_view(page: ft.Page) -> ft.View:
 
     filas_por_categoria = ft.Column(spacing=25)
 
-    def ir_a_detalle(id_est):
-        page.app_state["establecimiento_sel"] = id_est
-        page.go("/establecimiento/ver")
+    def ir_a_detalle(id_ent):
+        page.app_state["entretenimiento_sel"] = id_ent
+        page.go("/entretenimiento/ver")
 
     def cargar():
         filas_por_categoria.controls.clear()
         try:
-            dao = EstablecimientoDAO()
-            establecimientos = dao.obtener_todo()
+            resultado = EntretenimientoDAO().obtener_todo()
+            entretenimientos = resultado if isinstance(resultado, list) else [resultado]
         except Exception as ex:
             filas_por_categoria.controls.append(
                 ft.Text(f"No se pudo cargar la información: {ex}", color=ft.Colors.RED_300)
             )
             return
 
-        if not establecimientos:
+        if not entretenimientos:
             filas_por_categoria.controls.append(
-                ft.Text("No hay establecimientos registrados todavía.", color=MUTED)
+                ft.Text("No hay experiencias de entretenimiento registradas todavía.", color=MUTED)
             )
             return
 
-        # Agrupa por el campo 'categoria' (nombre de la categoría en la vista)
         agrupados = {}
-        for est in establecimientos:
-            clave = est.categoria if est.categoria else "Sin categoría"
-            agrupados.setdefault(clave, []).append(est)
+        for ent in entretenimientos:
+            clave = ent.categoria if ent.categoria else "Sin categoría"
+            agrupados.setdefault(clave, []).append(ent)
 
         for categoria_nombre, lista in agrupados.items():
             filas_por_categoria.controls.append(
-                ft.Row([ft.Icon(ft.Icons.RESTAURANT_MENU, color=BTN_GREEN),
+                ft.Row([ft.Icon(ft.Icons.CELEBRATION_OUTLINED, color=BTN_GREEN),
                         ft.Text(categoria_nombre, color=BTN_GREEN, size=18, weight=ft.FontWeight.BOLD)])
             )
             filas_por_categoria.controls.append(
                 ft.Row(
-                    [_tarjeta(e.nombre_establecimiento, on_click=lambda ev, id_e=e.id: ir_a_detalle(id_e)) for e in lista],
+                    [_tarjeta(ent.nombre_entretenimiento, on_click=lambda e, id_e=ent.id: ir_a_detalle(id_e)) for ent in lista],
                     wrap=True,
                     spacing=20,
                 )
@@ -129,8 +122,8 @@ def establecimientos_view(page: ft.Page) -> ft.View:
         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
     )
 
-    titulo = ft.Row([ft.Icon(ft.Icons.STOREFRONT_OUTLINED, color=TEXT, size=26),
-                     ft.Text("Establecimientos", color=TEXT, size=26, weight=ft.FontWeight.BOLD)])
+    titulo = ft.Row([ft.Icon(ft.Icons.CELEBRATION_OUTLINED, color=TEXT, size=26),
+                     ft.Text("Entretenimiento", color=TEXT, size=26, weight=ft.FontWeight.BOLD)])
 
     barra_filtros = ft.Row(
         [buscador, categoria_dd, ft.OutlinedButton("Filtros", icon=ft.Icons.FILTER_ALT_OUTLINED,
@@ -163,7 +156,7 @@ def establecimientos_view(page: ft.Page) -> ft.View:
     )
 
     return ft.View(
-        route="/establecimientos",
+        route="/entretenimiento",
         bgcolor=BG,
         padding=25,
         controls=[

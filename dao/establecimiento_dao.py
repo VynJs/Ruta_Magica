@@ -10,7 +10,7 @@ class EstablecimientoDAO:
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
 
-        cursor.execute("SELECT * FROM vista_establecimeinto")
+        cursor.execute("SELECT * FROM vista_establecimiento")
         registros = cursor.fetchall()
 
         establecimientos = []

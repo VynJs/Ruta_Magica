@@ -72,21 +72,15 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         except Exception:
             categoria_existente = None
 
-    nombre_field = ft.Dropdown(
+    nombre_field = ft.TextField(
         hint_text="Ej. Restaurantes",
         bgcolor=BG, border_color=BORDER, color=TEXT,
-        options=[
-            ft.dropdown.Option("Restaurantes"), ft.dropdown.Option("Cafeterías"),
-            ft.dropdown.Option("Bares"), ft.dropdown.Option("Musical"),
-            ft.dropdown.Option("Cultural"), ft.dropdown.Option("Tradicional"),
-        ],
-        value=categoria_existente.nombre if categoria_existente else None,
+        value=categoria_existente.nombre if categoria_existente else "",
     )
-    tipo_field = ft.Dropdown(
+    tipo_field = ft.TextField(
         hint_text="Ej. Establecimientos",
         bgcolor=BG, border_color=BORDER, color=TEXT,
-        options=[ft.dropdown.Option("Establecimientos"), ft.dropdown.Option("Eventos"), ft.dropdown.Option("Entretenimiento")],
-        value=categoria_existente.tipo_categoria if categoria_existente else None,
+        value=categoria_existente.tipo_categoria if categoria_existente else "",
     )
     descripcion_field = ft.TextField(
         hint_text="...", multiline=True, min_lines=3,
@@ -96,7 +90,8 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     estado_field = ft.Dropdown(
         bgcolor=BG, border_color=BORDER, color=TEXT,
         options=[ft.dropdown.Option("Activo"), ft.dropdown.Option("Inactivo")],
-        value=str(categoria_existente.estado) if categoria_existente else "Activo",
+        value=("Activo" if (not categoria_existente or categoria_existente.estado in (True, "true", "True", 1))
+               else "Inactivo"),
     )
 
     mensaje = ft.Text("", color=ft.Colors.RED_300)
@@ -121,14 +116,18 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
             page.update()
             return
         try:
+            # La columna 'estado' en la base de datos es booleana, así que
+            # convertimos el texto del dropdown ("Activo"/"Inactivo") a True/False.
+            estado_bool = estado_field.value == "Activo"
+
             if modo == "agregar":
                 nuevo_id = dao.obtener_ultimo_id() + 1
                 categoria = Categoria(nuevo_id, nombre_field.value, tipo_field.value,
-                                      descripcion_field.value, estado_field.value)
+                                      descripcion_field.value, estado_bool)
                 dao.insertar(categoria)
             else:
                 categoria = Categoria(categoria_existente.id, nombre_field.value, tipo_field.value,
-                                      descripcion_field.value, estado_field.value)
+                                      descripcion_field.value, estado_bool)
                 dao.actualizar(categoria)
             page.go("/admin/categorias")
         except Exception as ex:
@@ -161,20 +160,6 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         bgcolor=CARD, border_radius=10, border=ft.border.all(1, BORDER), padding=20, expand=True,
     )
 
-    imagen_box = ft.Container(
-        content=ft.Column(
-            [
-                ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=40, color=TEXT),
-                ft.Text("Subir imagen principal", color=TEXT),
-                ft.Text("JPG, PNG (máx. 2MB)", color=MUTED, size=11),
-                ft.ElevatedButton("Seleccionar archivo", style=ft.ButtonStyle(bgcolor=GOLD, color=BG)),
-            ],
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        ),
-        bgcolor=CARD, border=ft.border.all(1, BORDER), border_radius=10, padding=20,
-        alignment=ft.alignment.center, height=180,
-    )
-
     resumen_box = ft.Container(
         content=ft.Column(
             [
@@ -188,7 +173,7 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         bgcolor=CARD, border_radius=10, border=ft.border.all(1, BORDER), padding=20, width=320,
     )
 
-    columna_derecha = ft.Column([imagen_box, resumen_box], width=320, spacing=15)
+    columna_derecha = ft.Column([resumen_box], width=320, spacing=15)
 
     botones = ft.Row(
         [

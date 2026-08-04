@@ -1,6 +1,7 @@
 import flet as ft
 
 from dao.entretenimiento_dao import EntretenimientoDAO
+from dao.categoria_dao import CategoriaDAO
 from models.entretenimiento import Entretenimiento
 
 BG = "#173029"
@@ -73,9 +74,17 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
 
     nombre_field = ft.TextField(hint_text="Ej. La Malinche", bgcolor=BG, border_color=BORDER, color=TEXT,
                                  value=getattr(ex, "nombre_entretenimiento", ""))
+    try:
+        categorias_registradas = CategoriaDAO().obtener_todo()
+    except Exception:
+        categorias_registradas = []
+    opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas
+                          if str(getattr(c, "tipo_categoria", "")).strip().lower() in ("entretenimiento",)]
+    if not opciones_categoria:
+        opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas]
+
     categoria_field = ft.Dropdown(hint_text="Selecciona una categoria", bgcolor=BG, border_color=BORDER, color=TEXT,
-                                   options=[ft.dropdown.Option("Senderismo"), ft.dropdown.Option("Aventura"),
-                                            ft.dropdown.Option("Cultural"), ft.dropdown.Option("Familiar")],
+                                   options=opciones_categoria,
                                    value=str(getattr(ex, "categoria", "")) or None)
     hora_inicio_field = ft.TextField(hint_text="Ej. 10:00 am", bgcolor=BG, border_color=BORDER, color=TEXT,
                                       value=str(getattr(ex, "horario_inicio", "")))
