@@ -30,7 +30,7 @@ def _sidebar(page: ft.Page) -> ft.Container:
         width=210, bgcolor=SIDEBAR, padding=15,
         content=ft.Column(
             [
-                ft.Text("R⁘M", color=BTN_GREEN, size=22, weight=ft.FontWeight.BOLD),
+                ft.Image(src="logo.png", width=33, height=33),
                 ft.Text("Ruta Mágica", color=TEXT, size=12, italic=True),
                 ft.Container(height=15),
                 item(ft.Icons.HOME_OUTLINED, "Inicio", "/home"),
@@ -87,7 +87,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         except Exception:
             ex = None
 
-    nombre_field = ft.TextField(hint_text="Ej. Huamantlada", bgcolor=BG, border_color=BORDER, color=TEXT,
+    nombre_field = ft.TextField(hint_text="Ej. 4 Elementos", bgcolor=BG, border_color=BORDER, color=TEXT,
                                  value=getattr(ex, "nombre_establecimiento", ""))
     try:
         categorias_registradas = CategoriaDAO().obtener_todo()
@@ -107,6 +107,17 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                                    value=str(getattr(ex, "horario_fin", "")))
     direccion_field = ft.TextField(hint_text="Ej. Calle 5Pte. #123 Huamantla Tlaxcala",
                                     bgcolor=BG, border_color=BORDER, color=TEXT, value=getattr(ex, "direccion", ""))
+
+    _mapa_previo = getattr(ex, "mapa", "") or ""
+    _lat_previa, _lng_previa = "", ""
+    if "," in str(_mapa_previo):
+        partes = str(_mapa_previo).split(",", 1)
+        _lat_previa, _lng_previa = partes[0].strip(), partes[1].strip()
+
+    latitud_field = ft.TextField(hint_text="Ej. 19.3153", bgcolor=BG, border_color=BORDER, color=TEXT,
+                                  value=_lat_previa, width=180)
+    longitud_field = ft.TextField(hint_text="Ej. -97.9219", bgcolor=BG, border_color=BORDER, color=TEXT,
+                                   value=_lng_previa, width=180)
 
     propietario_field = ft.TextField(hint_text="Ej. Jose Luis Ortiz Huerta", bgcolor=BG, border_color=BORDER, color=TEXT,
                                       value=getattr(ex, "nombre_propietario", ""))
@@ -154,11 +165,13 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
             page.update()
             return
         try:
+            mapa_valor = f"{latitud_field.value},{longitud_field.value}" if latitud_field.value and longitud_field.value else ""
+
             if modo == "agregar":
                 nuevo_id = dao.obtener_ultimo_id() + 1
                 est = Establecimiento(
                     nuevo_id, nombre_field.value, categoria_field.value, hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, "", propietario_field.value, edad_field.value, telefono_field.value,
+                    direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, telefono_field.value,
                     correo_field.value, desc_corta_field.value, desc_completa_field.value,
                     caract1.value, caract2.value, caract3.value, instagram_field.value, facebook_field.value,
                     web_field.value, estado_field.value, servicios_field.value, rango_field.value, {},
@@ -167,7 +180,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
             else:
                 est = Establecimiento(
                     ex.id, nombre_field.value, categoria_field.value, hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, "", propietario_field.value, edad_field.value, telefono_field.value,
+                    direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, telefono_field.value,
                     correo_field.value, desc_corta_field.value, desc_completa_field.value,
                     caract1.value, caract2.value, caract3.value, instagram_field.value, facebook_field.value,
                     web_field.value, estado_field.value, servicios_field.value, rango_field.value, {},
@@ -191,7 +204,11 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                                ft.Row([hora_inicio_field, ft.Text("-", color=TEXT), hora_fin_field])], expand=True, spacing=3),
                 ]),
                 ft.Column([ft.Text("Dirección*", color=TEXT, size=12), direccion_field], spacing=3),
-                ft.OutlinedButton("Seleccionar en mapa", icon=ft.Icons.MAP_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
+                ft.Text("Coordenadas (opcional, mientras no hay selector de mapa)", color=MUTED, size=11),
+                ft.Row([
+                    ft.Column([ft.Text("Latitud", color=TEXT, size=12), latitud_field], spacing=3),
+                    ft.Column([ft.Text("Longitud", color=TEXT, size=12), longitud_field], spacing=3),
+                ]),
             ],
             spacing=8,
         ),

@@ -19,7 +19,8 @@ def _footer() -> ft.Container:
                 ft.Divider(color=BORDER),
                 ft.Row(
                     [
-                        ft.Text("Ruta Mágica", color=GOLD, size=14, weight=ft.FontWeight.BOLD),
+                        ft.Row([ft.Image(src="logo.png", width=20, height=20),
+                                ft.Text("Ruta Mágica", color=GOLD, size=14, weight=ft.FontWeight.BOLD)], spacing=6),
                         ft.Row(
                             [
                                 ft.TextButton("Ayuda", style=ft.ButtonStyle(color=MUTED)),
@@ -104,7 +105,7 @@ def login_view(page: ft.Page) -> ft.View:
                     ft.IconButton(ft.Icons.MENU, icon_color=GOLD),
                     ft.Column(
                         [
-                            ft.Text("R⁘M", size=30, color=BTN_GREEN, weight=ft.FontWeight.BOLD),
+                            ft.Image(src="logo.png", width=65, height=65),
                             ft.Text("Ruta Mágica", size=16, color=TEXT, italic=True),
                         ],
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,

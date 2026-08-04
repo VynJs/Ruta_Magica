@@ -106,7 +106,7 @@ def entretenimiento_view(page: ft.Page) -> ft.View:
             ft.IconButton(ft.Icons.MENU, icon_color=GOLD, on_click=lambda e: page.go("/home")),
             ft.Column(
                 [
-                    ft.Text("R⁘M", size=22, color=BTN_GREEN, weight=ft.FontWeight.BOLD),
+                    ft.Image(src="logo.png", width=33, height=33),
                     ft.Text("Ruta Mágica", size=12, color=TEXT, italic=True),
                 ],
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -136,7 +136,7 @@ def entretenimiento_view(page: ft.Page) -> ft.View:
             ft.Divider(color=BORDER),
             ft.Row(
                 [
-                    ft.Text("Ruta Mágica", color=GOLD),
+                    ft.Row([ft.Image(src="logo.png", width=20, height=20), ft.Text("Ruta Mágica", color=GOLD)], spacing=6),
                     ft.Row([
                         ft.TextButton("Ayuda", style=ft.ButtonStyle(color=MUTED)),
                         ft.TextButton("Términos y Condiciones", style=ft.ButtonStyle(color=MUTED)),
