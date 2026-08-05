@@ -28,7 +28,7 @@ def _sidebar(page: ft.Page) -> ft.Container:
         width=210, bgcolor=SIDEBAR, padding=15,
         content=ft.Column(
             [
-                ft.Text("R⁘M", color=BTN_GREEN, size=22, weight=ft.FontWeight.BOLD),
+                ft.Image(src="logo.png", width=33, height=33),
                 ft.Text("Ruta Mágica", color=TEXT, size=12, italic=True),
                 ft.Container(height=15),
                 item(ft.Icons.HOME_OUTLINED, "Inicio", "/home"),

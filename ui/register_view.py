@@ -67,7 +67,7 @@ def register_view(page: ft.Page) -> ft.View:
                     ft.IconButton(ft.Icons.MENU, icon_color=GOLD),
                     ft.Column(
                         [
-                            ft.Text("R⁘M", size=26, color=BTN_GREEN, weight=ft.FontWeight.BOLD),
+                            ft.Image(src="logo.png", width=39, height=39),
                             ft.Text("Ruta Mágica", size=14, color=TEXT, italic=True),
                         ],
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
