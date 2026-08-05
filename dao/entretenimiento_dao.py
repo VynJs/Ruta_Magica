@@ -55,6 +55,7 @@ class EntretenimientoDAO:
     def insertar(self, entretenimiento):
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
+
         sql = """
             INSERT INTO entretenimiento (
                 id, nombre_entretenimiento, categoria, horario_inicio, horario_fin,
@@ -65,18 +66,17 @@ class EntretenimientoDAO:
                 pagina_web
             ) VALUES (
                 %s, %s, %s, %s, %s, %s, POINT(%s,%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-            ) 
+            )
         """
-        
         cursor.execute(sql, (
             entretenimiento.id,
             entretenimiento.nombre_entretenimiento,
             entretenimiento.categoria,
             entretenimiento.horario_inicio,
             entretenimiento.horario_fin,
-            entretenimiento.direccion, 
-            entretenimiento.longitud,
-            entretenimiento.latitud,
+            entretenimiento.direccion,
+            entretenimiento.latitud if entretenimiento.latitud is not None else 0,
+            entretenimiento.longitud if entretenimiento.longitud is not None else 0,
             entretenimiento.nombre_responsable,
             entretenimiento.telefono,
             entretenimiento.correo,
@@ -97,16 +97,17 @@ class EntretenimientoDAO:
             entretenimiento.recomendacion_3,
             entretenimiento.recomendacion_4,
             entretenimiento.instagram,
-            entretenimiento.pagina_web
-            ))
+            entretenimiento.facebook,
+            entretenimiento.pagina_web,
+        ))
         conexion.commit()
         cursor.close()
         conexion.close()
-        
 
     def actualizar(self, entretenimiento):
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
+
         sql = """
             UPDATE entretenimiento SET
             nombre_entretenimiento = %s, categoria = %s, horario_inicio = %s, horario_fin = %s,
@@ -116,21 +117,20 @@ class EntretenimientoDAO:
             recomendacion_1 = %s, recomendacion_2 = %s, recomendacion_3 = %s, recomendacion_4 = %s, instagram = %s, facebook = %s,
             pagina_web = %s
             WHERE id = %s;
-        """    
+        """
         cursor.execute(sql, (
-            entretenimiento.id,
             entretenimiento.nombre_entretenimiento,
             entretenimiento.categoria,
             entretenimiento.horario_inicio,
             entretenimiento.horario_fin,
-            entretenimiento.direccion, 
-            entretenimiento.longitud,
-            entretenimiento.latitud,
+            entretenimiento.direccion,
+            entretenimiento.latitud if entretenimiento.latitud is not None else 0,
+            entretenimiento.longitud if entretenimiento.longitud is not None else 0,
             entretenimiento.nombre_responsable,
             entretenimiento.telefono,
             entretenimiento.correo,
             entretenimiento.descripcion_corta,
-            entretenimiento.descripcion_completa,   
+            entretenimiento.descripcion_completa,
             entretenimiento.caracteristica_1,
             entretenimiento.caracteristica_2,
             entretenimiento.caracteristica_3,
@@ -146,8 +146,10 @@ class EntretenimientoDAO:
             entretenimiento.recomendacion_3,
             entretenimiento.recomendacion_4,
             entretenimiento.instagram,
-            entretenimiento.pagina_web
-            ))
+            entretenimiento.facebook,
+            entretenimiento.pagina_web,
+            entretenimiento.id,
+        ))
         conexion.commit()
         cursor.close()
         conexion.close()

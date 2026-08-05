@@ -2,7 +2,10 @@ import flet as ft
 
 from dao.establecimiento_dao import EstablecimientoDAO
 from dao.categoria_dao import CategoriaDAO
+from dao.imagen_dao import ImagenDAO
 from models.establecimiento import Establecimiento
+from models.imagen import Imagen
+from services.cloudinary_service import subir_imagen
 
 BG = "#173029"
 CARD = "#28453A"
@@ -47,7 +50,7 @@ def _sidebar(page: ft.Page) -> ft.Container:
                 item(ft.Icons.EVENT, "Eventos", "/eventos"),
                 item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", "/configuracion"),
                 ft.Divider(color=BORDER),
                 ft.Container(
                     content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
@@ -93,14 +96,16 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         categorias_registradas = CategoriaDAO().obtener_todo()
     except Exception:
         categorias_registradas = []
-    opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas
+    opciones_categoria = [ft.dropdown.Option(key=str(c.id), text=c.nombre) for c in categorias_registradas
                           if str(getattr(c, "tipo_categoria", "")).strip().lower() in ("establecimientos", "establecimiento")]
     if not opciones_categoria:
-        opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas]
+        opciones_categoria = [ft.dropdown.Option(key=str(c.id), text=c.nombre) for c in categorias_registradas]
+
+    _categoria_existente = next((c for c in categorias_registradas if c.nombre == getattr(ex, "categoria", None)), None) if ex else None
 
     categoria_field = ft.Dropdown(hint_text="Selecciona una categoria", bgcolor=BG, border_color=BORDER, color=TEXT,
                                    options=opciones_categoria,
-                                   value=str(getattr(ex, "categoria", "")) or None)
+                                   value=str(_categoria_existente.id) if _categoria_existente else None)
     hora_inicio_field = ft.TextField(hint_text="Ej. 10:00 am", bgcolor=BG, border_color=BORDER, color=TEXT,
                                       value=str(getattr(ex, "horario_inicio", "")))
     hora_fin_field = ft.TextField(hint_text="Ej. 02:00 pm", bgcolor=BG, border_color=BORDER, color=TEXT,
@@ -159,6 +164,35 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
 
     mensaje = ft.Text("", color=ft.Colors.RED_300)
 
+    # --- Imagen principal (Cloudinary) ---
+    imagen_subida = {"url": getattr(ex, "imagen", None) if ex else None, "public_id": None}
+    vista_previa = ft.Image(src=imagen_subida["url"], width=60, height=60, fit=ft.ImageFit.COVER,
+                             border_radius=6, visible=bool(imagen_subida["url"]))
+    mensaje_imagen = ft.Text("", size=11, color=MUTED)
+
+    def archivo_seleccionado(e: ft.FilePickerResultEvent):
+        if not e.files:
+            return
+        ruta_local = e.files[0].path
+        mensaje_imagen.value = "Subiendo imagen..."
+        mensaje_imagen.color = MUTED
+        page.update()
+        try:
+            resultado = subir_imagen(ruta_local, carpeta="ruta_magica/establecimientos")
+            imagen_subida["url"] = resultado["url"]
+            imagen_subida["public_id"] = resultado["public_id"]
+            vista_previa.src = resultado["url"]
+            vista_previa.visible = True
+            mensaje_imagen.value = "Imagen subida correctamente."
+            mensaje_imagen.color = BTN_GREEN
+        except Exception as ex_img:
+            mensaje_imagen.value = f"No se pudo subir la imagen: {ex_img}"
+            mensaje_imagen.color = ft.Colors.RED_300
+        page.update()
+
+    file_picker = ft.FilePicker(on_result=archivo_seleccionado)
+    page.overlay.append(file_picker)
+
     def guardar(e):
         if not nombre_field.value or not categoria_field.value or not direccion_field.value:
             mensaje.value = "Completa los campos obligatorios de Información del establecimiento."
@@ -170,22 +204,34 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
             if modo == "agregar":
                 nuevo_id = dao.obtener_ultimo_id() + 1
                 est = Establecimiento(
-                    nuevo_id, nombre_field.value, categoria_field.value, hora_inicio_field.value, hora_fin_field.value,
+                    nuevo_id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
                     direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, telefono_field.value,
                     correo_field.value, desc_corta_field.value, desc_completa_field.value,
                     caract1.value, caract2.value, caract3.value, instagram_field.value, facebook_field.value,
                     web_field.value, estado_field.value, servicios_field.value, rango_field.value, {},
                 )
                 dao.insertar(est)
+                id_guardado = nuevo_id
             else:
                 est = Establecimiento(
-                    ex.id, nombre_field.value, categoria_field.value, hora_inicio_field.value, hora_fin_field.value,
+                    ex.id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
                     direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, telefono_field.value,
                     correo_field.value, desc_corta_field.value, desc_completa_field.value,
                     caract1.value, caract2.value, caract3.value, instagram_field.value, facebook_field.value,
                     web_field.value, estado_field.value, servicios_field.value, rango_field.value, {},
                 )
                 dao.actualizar(est)
+                id_guardado = ex.id
+
+            # Si se subió una imagen a Cloudinary, la registramos en la tabla imagenes
+            if imagen_subida["url"]:
+                imagen_dao = ImagenDAO()
+                nuevo_id_imagen = imagen_dao.obtener_ultimo_id() + 1
+                imagen_dao.insertar(Imagen(
+                    nuevo_id_imagen, id_guardado, None, None,
+                    imagen_subida["url"], imagen_subida["public_id"],
+                ))
+
             page.go("/admin/establecimientos")
         except Exception as ex2:
             mensaje.value = f"Error al guardar: {ex2}"
@@ -295,13 +341,16 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                         [ft.Icon(ft.Icons.CLOUD_UPLOAD_OUTLINED, size=35, color=TEXT),
                          ft.Text("Subir imagen principal", color=TEXT, size=12),
                          ft.Text("JPG, PNG o WEB (máx. 5MB)", color=MUTED, size=10),
-                         ft.ElevatedButton("Seleccionar archivo", style=ft.ButtonStyle(bgcolor=GOLD, color=BG))],
+                         ft.ElevatedButton("Seleccionar archivo", style=ft.ButtonStyle(bgcolor=GOLD, color=BG),
+                                           on_click=lambda e: file_picker.pick_files(
+                                               allow_multiple=False, file_type=ft.FilePickerFileType.IMAGE)),
+                         mensaje_imagen],
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     ),
                     bgcolor=BG, border=ft.border.all(1, BORDER), border_radius=10, padding=15,
                     alignment=ft.alignment.center, height=170,
                 ),
-                ft.Row([ft.Container(bgcolor="#DDDDDD", width=60, height=60, border_radius=6) for _ in range(3)]),
+                ft.Row([vista_previa] + [ft.Container(bgcolor="#DDDDDD", width=60, height=60, border_radius=6) for _ in range(2)]),
             ],
             spacing=10,
         ),

@@ -1,3 +1,5 @@
+import re
+
 import flet as ft
 
 from dao.entretenimiento_dao import EntretenimientoDAO
@@ -47,7 +49,7 @@ def _sidebar(page: ft.Page) -> ft.Container:
                 item(ft.Icons.EVENT, "Eventos", "/eventos"),
                 item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", "/configuracion"),
                 ft.Divider(color=BORDER),
                 ft.Container(
                     content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
@@ -78,20 +80,26 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         categorias_registradas = CategoriaDAO().obtener_todo()
     except Exception:
         categorias_registradas = []
-    opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas
+    opciones_categoria = [ft.dropdown.Option(key=str(c.id), text=c.nombre) for c in categorias_registradas
                           if str(getattr(c, "tipo_categoria", "")).strip().lower() in ("entretenimiento",)]
     if not opciones_categoria:
-        opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas]
+        opciones_categoria = [ft.dropdown.Option(key=str(c.id), text=c.nombre) for c in categorias_registradas]
+
+    _categoria_existente = next((c for c in categorias_registradas if c.nombre == getattr(ex, "categoria", None)), None) if ex else None
 
     categoria_field = ft.Dropdown(hint_text="Selecciona una categoria", bgcolor=BG, border_color=BORDER, color=TEXT,
                                    options=opciones_categoria,
-                                   value=str(getattr(ex, "categoria", "")) or None)
+                                   value=str(_categoria_existente.id) if _categoria_existente else None)
     hora_inicio_field = ft.TextField(hint_text="Ej. 10:00 am", bgcolor=BG, border_color=BORDER, color=TEXT,
                                       value=str(getattr(ex, "horario_inicio", "")))
     hora_fin_field = ft.TextField(hint_text="Ej. 02:00 pm", bgcolor=BG, border_color=BORDER, color=TEXT,
                                    value=str(getattr(ex, "horario_fin", "")))
     direccion_field = ft.TextField(hint_text="Ej. Parque Nacional La Malinche", bgcolor=BG, border_color=BORDER, color=TEXT,
                                     value=getattr(ex, "direccion", ""))
+    latitud_field = ft.TextField(hint_text="Ej. 19.3153", bgcolor=BG, border_color=BORDER, color=TEXT,
+                                  value=str(getattr(ex, "latitud", "") or ""), width=180)
+    longitud_field = ft.TextField(hint_text="Ej. -97.9219", bgcolor=BG, border_color=BORDER, color=TEXT,
+                                   value=str(getattr(ex, "longitud", "") or ""), width=180)
 
     responsable_field = ft.TextField(hint_text="Ej. Jose Luis Ortiz Huerta", bgcolor=BG, border_color=BORDER, color=TEXT,
                                       value=getattr(ex, "nombre_responsable", ""))
@@ -132,6 +140,23 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
 
     mensaje = ft.Text("", color=ft.Colors.RED_300)
 
+    def _parsear_coordenada(texto: str):
+        """Convierte '19.23096° N', '98.03216° O', '-97.92' etc. a float (o None si está vacío)."""
+        if not texto or not texto.strip():
+            return None
+        texto = texto.strip().upper()
+        negativo = any(letra in texto for letra in ("S", "O", "W"))
+        limpio = re.sub(r"[^0-9.\-]", "", texto)
+        if not limpio:
+            return None
+        try:
+            valor = float(limpio)
+        except ValueError:
+            return None
+        if negativo and valor > 0:
+            valor = -valor
+        return valor
+
     def guardar(e):
         if not nombre_field.value or not categoria_field.value or not direccion_field.value:
             mensaje.value = "Completa los campos obligatorios de Información del entretenimiento."
@@ -146,8 +171,8 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                 if nuevo_id is None:
                     nuevo_id = 1
                 ent = Entretenimiento(
-                    nuevo_id, nombre_field.value, categoria_field.value, hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, "", "", responsable_field.value, telefono_field.value, correo_field.value,
+                    nuevo_id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
+                    direccion_field.value, _parsear_coordenada(latitud_field.value), _parsear_coordenada(longitud_field.value), responsable_field.value, telefono_field.value, correo_field.value,
                     desc_corta_field.value, desc_completa_field.value, caract1.value, caract2.value, caract3.value,
                     capacidad_field.value, precio_field.value, *valores_servicio, *valores_recomendacion,
                     instagram_field.value, facebook_field.value, web_field.value,
@@ -155,8 +180,8 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                 dao.insertar(ent)
             else:
                 ent = Entretenimiento(
-                    ex.id, nombre_field.value, categoria_field.value, hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, "", "", responsable_field.value, telefono_field.value, correo_field.value,
+                    ex.id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
+                    direccion_field.value, _parsear_coordenada(latitud_field.value), _parsear_coordenada(longitud_field.value), responsable_field.value, telefono_field.value, correo_field.value,
                     desc_corta_field.value, desc_completa_field.value, caract1.value, caract2.value, caract3.value,
                     capacidad_field.value, precio_field.value, *valores_servicio, *valores_recomendacion,
                     instagram_field.value, facebook_field.value, web_field.value,
@@ -177,7 +202,11 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                 ]),
                 ft.Row([hora_inicio_field, ft.Text("-", color=TEXT), hora_fin_field]),
                 ft.Column([ft.Text("Dirección*", color=TEXT, size=12), direccion_field], spacing=3),
-                ft.OutlinedButton("Seleccionar en mapa", icon=ft.Icons.MAP_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
+                ft.Text("Coordenadas (opcional, mientras no hay selector de mapa)", color=MUTED, size=11),
+                ft.Row([
+                    ft.Column([ft.Text("Latitud", color=TEXT, size=12), latitud_field], spacing=3),
+                    ft.Column([ft.Text("Longitud", color=TEXT, size=12), longitud_field], spacing=3),
+                ]),
             ],
             spacing=8,
         ),

@@ -55,11 +55,11 @@ class EstablecimientoDAO:
 
         sql = """
         INSERT INTO establecimiento (
-        nombre_establecimiento, categoria, horario_inicio, horario_fin, direccion, mapa, 
+        id, nombre_establecimiento, categoria, horario_inicio, horario_fin, direccion, mapa, 
         nombre_propietario, edad, telefono, correo, descripcion_corta, descripcion_completa,
         caracteristica_1, caracteristica_2, caracteristica_3, instagram, facebook,
         pagina_web, estado, servicios, rango_precios, productos_ofrecer)
-        VALUES ( %s, %s, %s, %s, %s, POINT(%s,%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         cursor.execute(sql, (
@@ -69,14 +69,13 @@ class EstablecimientoDAO:
             establecimiento.horario_inicio,
             establecimiento.horario_fin,
             establecimiento.direccion,
-            establecimiento.longitud,
-            establecimiento.latitud,
+            establecimiento.mapa,
             establecimiento.nombre_propietario,
             establecimiento.edad,
             establecimiento.telefono,
             establecimiento.correo,
             establecimiento.descripcion_corta,
-            establecimiento.descripcion_completa,
+            establecimiento.descripcion_Completa,
             establecimiento.caracteristica_1,
             establecimiento.caracteristica_2,
             establecimiento.caracteristica_3,
@@ -87,16 +86,11 @@ class EstablecimientoDAO:
             establecimiento.servicios,
             establecimiento.rango_precios,
             Json(establecimiento.productos_ofrecer)
-
         ))
 
         conexion.commit()
         cursor.close()
         conexion.close()
-
-        #UPDATE
-        #==========================================================================================
-
 
     def actualizar(self, establecimiento):
         conexion = Conexion.obtener_conexion()
@@ -104,27 +98,25 @@ class EstablecimientoDAO:
 
         sql = """
             UPDATE establecimiento SET
-            nombre_establecimiento = %s, categoria = %s, horario_inicio = %s, horario_fin = %s, direccion = %s, mapa = POINT(%s, %s), 
+            nombre_establecimiento = %s, categoria = %s, horario_inicio = %s, horario_fin = %s, direccion = %s, mapa = %s,
             nombre_propietario = %s, edad = %s, telefono = %s, correo = %s, descripcion_corta = %s, descripcion_completa = %s,
             caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s, instagram = %s, facebook = %s,
             pagina_web = %s, estado = %s, servicios = %s, rango_precios = %s, productos_ofrecer = %s
             WHERE id = %s
         """
         cursor.execute(sql, (
-                        establecimiento.id,
                         establecimiento.nombre_establecimiento,
                         establecimiento.categoria,
                         establecimiento.horario_inicio,
                         establecimiento.horario_fin,
                         establecimiento.direccion,
-                        establecimiento.longitud,
-                        establecimiento.latitud,
+                        establecimiento.mapa,
                         establecimiento.nombre_propietario,
                         establecimiento.edad,
                         establecimiento.telefono,
                         establecimiento.correo,
                         establecimiento.descripcion_corta,
-                        establecimiento.descripcion_completa,
+                        establecimiento.descripcion_Completa,
                         establecimiento.caracteristica_1,
                         establecimiento.caracteristica_2,
                         establecimiento.caracteristica_3,
@@ -134,7 +126,8 @@ class EstablecimientoDAO:
                         establecimiento.estado,
                         establecimiento.servicios,
                         establecimiento.rango_precios,
-                        Json(establecimiento.productos_ofrecer)
+                        Json(establecimiento.productos_ofrecer),
+                        establecimiento.id
                         ))
 
         conexion.commit()

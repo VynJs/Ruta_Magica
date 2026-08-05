@@ -55,9 +55,9 @@ class ImagenDAO:
                 id_entretenimiento,
                 id_evento,
                 url_imagen,
-                public_id,
+                public_id
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s)
             RETURNING id;
         """
 
@@ -70,7 +70,7 @@ class ImagenDAO:
                     imagen.id_entretenimiento,
                     imagen.id_evento,
                     imagen.url_imagen,
-                    imagen.public_id
+                    imagen.public_id,
                 ),
             )
 

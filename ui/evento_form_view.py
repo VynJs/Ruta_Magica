@@ -47,7 +47,7 @@ def _sidebar(page: ft.Page) -> ft.Container:
                 item(ft.Icons.EVENT, "Eventos", "/eventos"),
                 item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", "/configuracion"),
                 ft.Divider(color=BORDER),
                 ft.Container(
                     content=ft.Row([ft.Icon(ft.Icons.LOGOUT, color=TEXT, size=18), ft.Text("Cerrar sesión", color=TEXT)]),
@@ -83,14 +83,16 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
         categorias_registradas = CategoriaDAO().obtener_todo()
     except Exception:
         categorias_registradas = []
-    opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas
+    opciones_categoria = [ft.dropdown.Option(key=str(c.id), text=c.nombre) for c in categorias_registradas
                           if str(getattr(c, "tipo_categoria", "")).strip().lower() in ("eventos", "evento")]
     if not opciones_categoria:
-        opciones_categoria = [ft.dropdown.Option(c.nombre) for c in categorias_registradas]
+        opciones_categoria = [ft.dropdown.Option(key=str(c.id), text=c.nombre) for c in categorias_registradas]
+
+    _categoria_existente = next((c for c in categorias_registradas if c.nombre == getattr(ex, "categoria", None)), None) if ex else None
 
     categoria_field = ft.Dropdown(hint_text="Selecciona una categoria", bgcolor=BG, border_color=BORDER, color=TEXT,
                                    options=opciones_categoria,
-                                   value=str(getattr(ex, "categoria", "")) or None)
+                                   value=str(_categoria_existente.id) if _categoria_existente else None)
     fecha_field = ft.TextField(hint_text="10/08/2026", bgcolor=BG, border_color=BORDER, color=TEXT,
                                 value=str(getattr(ex, "fecha", "")))
     hora_inicio_field = ft.TextField(hint_text="Ej. 10:00 am", bgcolor=BG, border_color=BORDER, color=TEXT,
@@ -99,6 +101,17 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                                    value=str(getattr(ex, "horario_fin", "")))
     col_ubicacion, ubicacion_field = _campo("Ubicación*", "Ej. Calle 5Pte. #123 Huamantla Tlaxcala",
                                              value=getattr(ex, "ubicacion", ""))
+
+    _mapa_previo_ev = getattr(ex, "mapa", "") or ""
+    _lat_previa_ev, _lng_previa_ev = "", ""
+    if "," in str(_mapa_previo_ev):
+        _partes_ev = str(_mapa_previo_ev).split(",", 1)
+        _lat_previa_ev, _lng_previa_ev = _partes_ev[0].strip(), _partes_ev[1].strip()
+
+    latitud_field = ft.TextField(hint_text="Ej. 19.3153", bgcolor=BG, border_color=BORDER, color=TEXT,
+                                  value=_lat_previa_ev, width=180)
+    longitud_field = ft.TextField(hint_text="Ej. -97.9219", bgcolor=BG, border_color=BORDER, color=TEXT,
+                                   value=_lng_previa_ev, width=180)
 
     col_organizador, organizador_field = _campo("Nombre del organizador *", "Ej. Jose Luis Ortiz Huerta",
                                                   value=getattr(ex, "nombre_organizador", ""))
@@ -141,11 +154,13 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
             page.update()
             return
         try:
+            mapa_valor = f"{latitud_field.value},{longitud_field.value}" if latitud_field.value and longitud_field.value else ""
+
             if modo == "agregar":
                 nuevo_id = dao.obtener_ultimo_id() + 1
                 evento = Evento(
-                    nuevo_id, nombre_field.value, categoria_field.value, fecha_field.value,
-                    hora_inicio_field.value, hora_fin_field.value, ubicacion_field.value, "",
+                    nuevo_id, nombre_field.value, int(categoria_field.value), fecha_field.value,
+                    hora_inicio_field.value, hora_fin_field.value, ubicacion_field.value, mapa_valor,
                     organizador_field.value, edad_field.value, telefono_field.value, correo_field.value,
                     desc_corta_field.value, desc_completa_field.value, caract1.value, caract2.value, caract3.value,
                     instagram_field.value, facebook_field.value, web_field.value, estado_field.value, {},
@@ -153,8 +168,8 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                 dao.insertar(evento)
             else:
                 evento = Evento(
-                    ex.id, nombre_field.value, categoria_field.value, fecha_field.value,
-                    hora_inicio_field.value, hora_fin_field.value, ubicacion_field.value, "",
+                    ex.id, nombre_field.value, int(categoria_field.value), fecha_field.value,
+                    hora_inicio_field.value, hora_fin_field.value, ubicacion_field.value, mapa_valor,
                     organizador_field.value, edad_field.value, telefono_field.value, correo_field.value,
                     desc_corta_field.value, desc_completa_field.value, caract1.value, caract2.value, caract3.value,
                     instagram_field.value, facebook_field.value, web_field.value, estado_field.value, {},
@@ -176,7 +191,11 @@ def evento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                     ft.Column([ft.Text("Fecha *", color=TEXT, size=12), fecha_field], spacing=3),
                 ]),
                 col_ubicacion,
-                ft.OutlinedButton("Seleccionar en mapa", icon=ft.Icons.MAP_OUTLINED, style=ft.ButtonStyle(color=TEXT)),
+                ft.Text("Coordenadas (opcional, mientras no hay selector de mapa)", color=MUTED, size=11),
+                ft.Row([
+                    ft.Column([ft.Text("Latitud", color=TEXT, size=12), latitud_field], spacing=3),
+                    ft.Column([ft.Text("Longitud", color=TEXT, size=12), longitud_field], spacing=3),
+                ]),
             ],
             spacing=8,
         ),

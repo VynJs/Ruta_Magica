@@ -90,7 +90,7 @@ def categoria_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
     estado_field = ft.Dropdown(
         bgcolor=BG, border_color=BORDER, color=TEXT,
         options=[ft.dropdown.Option("Activo"), ft.dropdown.Option("Inactivo")],
-        value=("Activo" if (not categoria_existente or categoria_existente.estado in (True, "true", "True", 1))
+        value=("Activo" if (not categoria_existente or categoria_existente.estado in (True, "true", "Activo", 1))
                else "Inactivo"),
     )
 

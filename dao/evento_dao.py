@@ -60,7 +60,7 @@ class EventoDAO:
         nombre_organizador, edad, telefono, correo, descripcion_corta, 
         descripcion_completa, caracteristica_1, caracteristica_2, caracteristica_3, instagram,
         facebook, pagina_web, estado, datos_destacados) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, POINT(%s,%s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s ) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) 
         """
         cursor.execute(sql, (
             evento.id,
@@ -70,8 +70,7 @@ class EventoDAO:
             evento.horario_inicio,
             evento.horario_fin,
             evento.ubicacion,
-            evento.longitud,
-            evento.latitud,
+            evento.mapa,
             evento.nombre_organizador,
             evento.edad,
             evento.telefono,
@@ -92,29 +91,26 @@ class EventoDAO:
         cursor.close()
         conexion.close()
 
-    #==========================================================================================
-
     def actualizar(self, evento):
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
 
         sql = """
             UPDATE evento SET
-            nombre_evento = %s, categoria = %s, fecha = %s, hora_inicio = %s, hora_fin = %s, ubicacion = %s, mapa = POINT(%s, %s),
+            nombre_evento = %s, categoria = %s, fecha = %s, hora_inicio = %s, hora_fin = %s, ubicacion = %s, mapa = %s,
             nombre_organizador = %s, edad = %s, telefono = %s, correo = %s, descripcion_corta = %s, 
             descripcion_completa = %s, caracteristica_1 = %s, caracteristica_2 = %s, caracteristica_3 = %s, instagram = %s,
             facebook = %s, pagina_web = %s, estado = %s, datos_destacados = %s
             WHERE id = %s;
         """
         cursor.execute(sql, (
-                        evento.id,
                         evento.nombre_evento,
                         evento.categoria,
                         evento.fecha,
                         evento.horario_inicio,
                         evento.horario_fin,
                         evento.ubicacion,
-                        evento.longitud,
+                        evento.mapa,
                         evento.nombre_organizador,
                         evento.edad,
                         evento.telefono,
@@ -128,7 +124,8 @@ class EventoDAO:
                         evento.facebook,
                         evento.pagina_web,
                         evento.estado,
-                        Json(evento.datos_destacados)
+                        Json(evento.datos_destacados),
+                        evento.id
                         ))
 
         conexion.commit()

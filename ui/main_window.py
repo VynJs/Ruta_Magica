@@ -20,6 +20,7 @@ from ui.establecimiento_form_view import establecimiento_form_view
 from ui.establecimiento_detalle_view import establecimiento_detalle_view
 from ui.admin_entretenimiento_view import admin_entretenimiento_view
 from ui.entretenimiento_form_view import entretenimiento_form_view
+from ui.configuracion_view import configuracion_view
 from ui.entretenimiento_detalle_view import entretenimiento_detalle_view
 
 
@@ -76,6 +77,9 @@ def main_window(page: ft.Page):
 
         elif page.route == "/entretenimiento/ver":
             page.views.append(entretenimiento_ver_view(page))
+
+        elif page.route == "/configuracion":
+            page.views.append(configuracion_view(page))
 
         elif page.route == "/admin/reportes":
             page.views.append(admin_reportes_view(page))
