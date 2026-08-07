@@ -53,7 +53,7 @@ def _sidebar(page: ft.Page, seleccionado: str) -> ft.Container:
                 item(ft.Icons.EVENT, "Eventos", "/eventos", "eventos"),
                 item(ft.Icons.STAR_BORDER, "Entretenimiento", "/entretenimiento", "entretenimiento"),
                 ft.Container(expand=True),
-                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", None, "config"),
+                item(ft.Icons.SETTINGS_OUTLINED, "Configuración", "/configuracion", "config"),
                 ft.Container(height=10),
                 ft.Divider(color=BORDER),
                 ft.Container(
@@ -122,6 +122,22 @@ def admin_reportes_view(page: ft.Page) -> ft.View:
     except Exception:
         pass
 
+    # --- GROUP BY: establecimientos agrupados por categoría (para la dona) ---
+    try:
+        establecimientos_por_categoria = EstablecimientoDAO().contar_por_categoria()
+    except Exception:
+        establecimientos_por_categoria = []
+
+    # --- GROUP BY: eventos agrupados por estado (Aprobado / En revisión / Rechazado) ---
+    try:
+        eventos_por_estado = EventoDAO().contar_por_estado()
+    except Exception:
+        eventos_por_estado = []
+    mapa_estados_evento = {str(estado).lower(): cantidad for estado, cantidad in eventos_por_estado}
+    eventos_aprobados = mapa_estados_evento.get("aprobado", 0)
+    eventos_revision = mapa_estados_evento.get("en revisión", 0) + mapa_estados_evento.get("en revision", 0)
+    eventos_rechazados = mapa_estados_evento.get("rechazado", 0)
+
     encabezado = ft.Row(
         [
             ft.Column(
@@ -155,6 +171,28 @@ def admin_reportes_view(page: ft.Page) -> ft.View:
         spacing=15,
     )
 
+    desglose_eventos = ft.Container(
+        content=ft.Column(
+            [
+                ft.Text("Eventos por estado", color=TEXT, size=13, weight=ft.FontWeight.BOLD),
+                ft.Text("GROUP BY estado", color=MUTED, size=10, italic=True),
+                ft.Row(
+                    [
+                        ft.Row([ft.Icon(ft.Icons.CHECK_CIRCLE_OUTLINE, color=BTN_GREEN, size=16),
+                                ft.Text(f"Aprobados: {eventos_aprobados}", color=TEXT, size=12)]),
+                        ft.Row([ft.Icon(ft.Icons.AUTORENEW, color=GOLD, size=16),
+                                ft.Text(f"En revisión: {eventos_revision}", color=TEXT, size=12)]),
+                        ft.Row([ft.Icon(ft.Icons.CANCEL_OUTLINED, color="#C0564C", size=16),
+                                ft.Text(f"Rechazados: {eventos_rechazados}", color=TEXT, size=12)]),
+                    ],
+                    spacing=20, wrap=True,
+                ),
+            ],
+            spacing=4,
+        ),
+        bgcolor=CARD, border_radius=10, border=ft.border.all(1, BORDER), padding=12,
+    )
+
     grafica = ft.Container(
         content=ft.Column(
             [
@@ -173,11 +211,29 @@ def admin_reportes_view(page: ft.Page) -> ft.View:
         expand=True,
     )
 
+    _colores_dona = [GOLD, BTN_GREEN, "#6FA8DC", "#C77DFF", "#E39A9A", "#8FD9C4"]
+    secciones_dona = []
+    leyenda_dona = []
+    for idx, (nombre_cat, cantidad) in enumerate(establecimientos_por_categoria):
+        color = _colores_dona[idx % len(_colores_dona)]
+        secciones_dona.append(
+            ft.PieChartSection(value=cantidad, color=color, radius=45)
+        )
+        leyenda_dona.append(
+            ft.Row([
+                ft.Container(width=10, height=10, bgcolor=color, border_radius=3),
+                ft.Text(f"{nombre_cat} ({cantidad})", color=TEXT, size=11),
+            ], spacing=6)
+        )
+
     donut = ft.Container(
         content=ft.Column(
             [
-                ft.Text("Eventos más visitados", color=TEXT, size=16, weight=ft.FontWeight.BOLD),
-                ft.PieChart(sections=[], center_space_radius=40, height=180),
+                ft.Text("Establecimientos por categoría", color=TEXT, size=16, weight=ft.FontWeight.BOLD),
+                ft.Text("GROUP BY categoria — agrupa y cuenta con una sola consulta", color=MUTED, size=10, italic=True),
+                ft.PieChart(sections=secciones_dona, center_space_radius=40, height=160) if secciones_dona
+                else ft.Text("Sin establecimientos registrados todavía.", color=MUTED, size=12),
+                ft.Column(leyenda_dona, spacing=4),
             ]
         ),
         bgcolor=CARD,
@@ -229,6 +285,7 @@ def admin_reportes_view(page: ft.Page) -> ft.View:
             encabezado,
             ft.Divider(color=GOLD),
             tarjetas,
+            desglose_eventos,
             ft.Row([grafica, donut], vertical_alignment=ft.CrossAxisAlignment.START),
             tabla,
         ],

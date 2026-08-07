@@ -234,3 +234,19 @@ class EventoDAO:
         conexion.commit()
         cursor.close()
         conexion.close()
+
+    def contar_por_estado(self):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            SELECT estado, COUNT(*) 
+            FROM evento 
+            GROUP BY estado
+        """)
+        resultados = cursor.fetchall()
+
+        cursor.close()
+        conexion.close()
+
+        return resultados  # lista de tuplas: (estado, cantidad)    

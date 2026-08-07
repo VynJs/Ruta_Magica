@@ -140,6 +140,11 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
 
     mensaje = ft.Text("", color=ft.Colors.RED_300)
 
+    def _solo_digitos(texto):
+        """Limpia espacios/guiones de un teléfono. Regresa texto (para columnas varchar)."""
+        limpio = re.sub(r"[^0-9]", "", texto or "")
+        return limpio or None
+
     def _parsear_coordenada(texto: str):
         """Convierte '19.23096° N', '98.03216° O', '-97.92' etc. a float (o None si está vacío)."""
         if not texto or not texto.strip():
@@ -172,7 +177,7 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                     nuevo_id = 1
                 ent = Entretenimiento(
                     nuevo_id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, _parsear_coordenada(latitud_field.value), _parsear_coordenada(longitud_field.value), responsable_field.value, telefono_field.value, correo_field.value,
+                    direccion_field.value, _parsear_coordenada(latitud_field.value), _parsear_coordenada(longitud_field.value), responsable_field.value, _solo_digitos(telefono_field.value), correo_field.value,
                     desc_corta_field.value, desc_completa_field.value, caract1.value, caract2.value, caract3.value,
                     capacidad_field.value, precio_field.value, *valores_servicio, *valores_recomendacion,
                     instagram_field.value, facebook_field.value, web_field.value,
@@ -181,7 +186,7 @@ def entretenimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
             else:
                 ent = Entretenimiento(
                     ex.id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, _parsear_coordenada(latitud_field.value), _parsear_coordenada(longitud_field.value), responsable_field.value, telefono_field.value, correo_field.value,
+                    direccion_field.value, _parsear_coordenada(latitud_field.value), _parsear_coordenada(longitud_field.value), responsable_field.value, _solo_digitos(telefono_field.value), correo_field.value,
                     desc_corta_field.value, desc_completa_field.value, caract1.value, caract2.value, caract3.value,
                     capacidad_field.value, precio_field.value, *valores_servicio, *valores_recomendacion,
                     instagram_field.value, facebook_field.value, web_field.value,

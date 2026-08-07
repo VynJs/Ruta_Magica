@@ -1,3 +1,5 @@
+import re
+
 import flet as ft
 
 from dao.establecimiento_dao import EstablecimientoDAO
@@ -164,6 +166,11 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
 
     mensaje = ft.Text("", color=ft.Colors.RED_300)
 
+    def _solo_digitos(texto):
+        """Limpia espacios/guiones de un teléfono. Regresa texto (para columnas varchar)."""
+        limpio = re.sub(r"[^0-9]", "", texto or "")
+        return limpio or None
+
     # --- Imagen principal (Cloudinary) ---
     imagen_subida = {"url": getattr(ex, "imagen", None) if ex else None, "public_id": None}
     vista_previa = ft.Image(src=imagen_subida["url"], width=60, height=60, fit=ft.ImageFit.COVER,
@@ -205,7 +212,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
                 nuevo_id = dao.obtener_ultimo_id() + 1
                 est = Establecimiento(
                     nuevo_id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, telefono_field.value,
+                    direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, _solo_digitos(telefono_field.value),
                     correo_field.value, desc_corta_field.value, desc_completa_field.value,
                     caract1.value, caract2.value, caract3.value, instagram_field.value, facebook_field.value,
                     web_field.value, estado_field.value, servicios_field.value, rango_field.value, {},
@@ -215,7 +222,7 @@ def establecimiento_form_view(page: ft.Page, modo: str = "agregar") -> ft.View:
             else:
                 est = Establecimiento(
                     ex.id, nombre_field.value, int(categoria_field.value), hora_inicio_field.value, hora_fin_field.value,
-                    direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, telefono_field.value,
+                    direccion_field.value, mapa_valor, propietario_field.value, edad_field.value, _solo_digitos(telefono_field.value),
                     correo_field.value, desc_corta_field.value, desc_completa_field.value,
                     caract1.value, caract2.value, caract3.value, instagram_field.value, facebook_field.value,
                     web_field.value, estado_field.value, servicios_field.value, rango_field.value, {},

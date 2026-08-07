@@ -6,46 +6,45 @@ class EstablecimientoDAO:
  #SELCT * from
  # #==========================================================================================
 
-    def obtener_todo(self):
-        conexion = Conexion.obtener_conexion()
-        cursor = conexion.cursor()
+    
+ def obtener_todo(self):
+    conexion = Conexion.obtener_conexion()
+    cursor = conexion.cursor()
 
-        cursor.execute("SELECT * FROM vista_establecimiento")
-        registros = cursor.fetchall()
+    cursor.execute("SELECT * FROM vista_establecimiento")
+    registros = cursor.fetchall()
 
-        establecimientos = []
-        for registro in registros:
-            establecimiento = Establecimiento(
-                id = registro[0],
-                nombre_establecimiento = registro[1],
-                categoria = registro[2],
-                horario_inicio = registro[3],
-                horario_fin= registro[4],
-                direccion= registro[5],
-                latitud = registro[6],
-                longitud = registro[7],
-                nombre_propietario= registro[8],
-                edad= registro[9],
-                telefono= registro[10],
-                correo= registro[11],
-                descripcion_corta= registro[12],
-                descripcion_completa= registro[13],
-                caracteristica_1= registro[14],
-                caracteristica_2= registro[15],
-                caracteristica_3= registro[16],
-                instagram= registro[17],
-                facebook= registro[18],
-                pagina_web= registro[19],
-                estado= registro[20],
-                servicios= registro[21],
-                rango_precios= registro[22],
-                productos_ofrecer= registro[23]
-
-            )
-            establecimientos.append(establecimiento)
-        cursor.close()
-        conexion.close()
-        return establecimientos
+    establecimientos = []
+    for registro in registros:
+        establecimiento = Establecimiento(
+            id=registro[0],
+            nombre_establecimiento=registro[1],
+            categoria=registro[2],
+            horario_inicio=registro[3],
+            horario_fin=registro[4],
+            direccion=registro[5],
+            mapa=registro[6],   # point ya viene como (x, y) desde psycopg2
+            nombre_propietario=registro[7],
+            edad=registro[8],
+            telefono=registro[9],
+            correo=registro[10],
+            descripcion_corta=registro[11],
+            descripcion_completa=registro[12],
+            caracteristica_1=registro[13],
+            caracteristica_2=registro[14],
+            caracteristica_3=registro[15],
+            instagram=registro[16],
+            facebook=registro[17],
+            pagina_web=registro[18],
+            estado=registro[19],
+            servicios=registro[20],
+            rango_precios=registro[21],
+            productos_ofrecer=registro[22],
+        )
+        establecimientos.append(establecimiento)
+    cursor.close()
+    conexion.close()
+    return establecimientos
     
     #==========================================================================================
 
@@ -235,3 +234,21 @@ class EstablecimientoDAO:
         conexion.commit()
         cursor.close()
         conexion.close()
+
+    def contar_por_categoria(self):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            SELECT c.nombre, COUNT(e.id) 
+            FROM establecimiento e
+            JOIN categoria c ON e.categoria = c.id
+            GROUP BY c.nombre
+            ORDER BY COUNT(e.id) DESC
+        """)
+        resultados = cursor.fetchall()
+
+        cursor.close()
+        conexion.close()
+
+        return resultados  # lista de tuplas: (nombre_categoria, cantidad)    
